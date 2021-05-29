@@ -12,6 +12,26 @@
       <ion-title size="large">Tab 2</ion-title>
     </ion-toolbar>
   </ion-header>
-
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <ion-list>
+    <ion-item-sliding *ngFor="let habit of habits"  (click)="test(habit)">
+      <ion-item>
+        <ion-label >{{habit?.Name}}</ion-label>
+        <ion-badge slot="end">{{habit?.FinalTracking?.Streak}}</ion-badge>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option (click)="unread(item)">
+          <ion-icon style="font-size: 2em;" name="sad-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+    <ion-item *ngFor="let habit of habits" (click)="test(habit)">
+      
+      <ion-label>{{habit?.Name}}</ion-label>
+      
+      
+      <ion-icon slot="end" name="sad-outline" (click)="addTracking(habit)"></ion-icon>
+      
+    </ion-item>
+  </ion-list>
+  <!-- <app-explore-container name="Tab 2 page"></app-explore-container> -->
 </ion-content>

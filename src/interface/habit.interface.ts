@@ -5,7 +5,8 @@ export interface IHabit {
     Description: string,
     Name: string,
     TargetDays: number,
-    Trackings: IHabitTracker[]
+    Trackings: IHabitTracker[],
+    FinalTracking: IHabitTracker
 }
 
 export interface IHabitTracker{

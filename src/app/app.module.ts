@@ -12,6 +12,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { HabitProvider } from 'src/providers/habits/habits';
 import { HabitTrackingProvider } from 'src/providers/habitTracker/habitTracker';
+import { ToastService } from './common/util';
 // import { AngularFireModule } from 'angularfire2';
 // import { AngularFirestoreModule } from 'angularfire2/firestore';
 
@@ -27,6 +28,7 @@ import { HabitTrackingProvider } from 'src/providers/habitTracker/habitTracker';
   providers: [
     StatusBar,
     SplashScreen,
+    ToastService,
     HabitProvider,
     HabitTrackingProvider,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
