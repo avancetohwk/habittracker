@@ -16,7 +16,7 @@ import { HabitType } from '../../enums'
 @Injectable()
 export class HabitTrackingProvider {
 
-  collection: string ='habitTrackersss';
+  collection: string ='habitTracker';
 
 
   constructor(private db: AngularFirestore,private afStorage: AngularFireStorage) {
