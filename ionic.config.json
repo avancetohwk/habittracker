@@ -1,0 +1,7 @@
+{
+  "name": "Randomiser",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
