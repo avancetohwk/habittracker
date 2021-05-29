@@ -3,7 +3,7 @@ import { HabitTrackingProvider } from 'src/providers/habitTracker/habitTracker';
 import { HabitProvider } from 'src/providers/habits/habits';
 import { ModalController, NavController, ToastController } from '@ionic/angular';
 import { IHabit, IHabitTracker } from 'src/interface/habit.interface';
-import { ToastService } from '../common/util';
+import { ToastService, isDateBeforeToday, getCurrentStreak } from '../common/util';
 import { Observable, forkJoin, zip } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
 @Component({
@@ -63,6 +63,7 @@ export class Tab2Page {
                     var currTrackings = trackings[idx];
                     this.habits[idx].Trackings = currTrackings;
                     this.habits[idx].FinalTracking = currTrackings[(<any>currTrackings).length -1];
+                    this.habits[idx].CurrStreak = getCurrentStreak(this.habits[idx].FinalTracking);
                 }
                 console.log(this.habits)
                 //this.getGaugeChartData(this.habits)
@@ -85,14 +86,54 @@ export class Tab2Page {
     });
   }
 
-  addTracking(item:any){
-    console.log(item);
-  }
 
-  test(habit:IHabit){
+  addTracking(habit:IHabit){
+    
+   
+    if(habit.FinalTracking != null && !isDateBeforeToday((<any>habit.FinalTracking.Date).toDate())){
+        //latestDate is today, just update frequency
+        var finalTracking = habit.FinalTracking;
+        finalTracking.Frequency++;
+        this.habitTrackingProvider.UpdateHabitTrackingFrequency(finalTracking.Id, finalTracking).then(res =>{
+            this.toastService.presentToast("success")
+            this.getHabits();
+        }
+        ,(error) => {
+            // this.loadError = true;
+            this.toastService.presentToast(error.message);
+            
+        });
+    }else{
+        var newHabit = {
+            Id: null,
+            Date: new Date(),
+            Frequency: 1,
+            HabitId:habit.Id,
+            Streak: 0
+        };
+        this.habitTrackingProvider.AddHabitTracking(newHabit).then(res => {
+            
+            this.toastService.presentToast('success');
+            this.getHabits();
+            // this.hhabitighlights = data.content as IWiseInfoTVHighlights[];
+        },
+        (error) => {
+            // this.loadError = true;
+            this.toastService.presentToast(error.message);
+            
+        });
+    }
+    
+    console.log(habit)
+    
+}
+
+
+  goToDetailsPage(habit:IHabit){
     console.log(habit);
     let navigationExtras: NavigationExtras = { state: { habit: habit } };
     this.router.navigateByUrl('/details', navigationExtras);
+    //this.toastService.presentToast("should route")
     // console.log(this.toastService)
     // this.toastService.presentToast(msg);
   }

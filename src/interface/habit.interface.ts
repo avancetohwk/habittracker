@@ -6,13 +6,14 @@ export interface IHabit {
     Name: string,
     TargetDays: number,
     Trackings: IHabitTracker[],
-    FinalTracking: IHabitTracker
+    FinalTracking: IHabitTracker,
+    CurrStreak:number
 }
 
 export interface IHabitTracker{
     Id: string,
     Date: Date,
     Frequency: number,
-    HabitId: number,
+    HabitId: string,
     Streak: number
 }
