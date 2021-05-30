@@ -21,9 +21,7 @@ registerLocaleData(localeEn);
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
  
-import { CalendarModule, CalendarDateFormatter, CalendarEventTitleFormatter, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { CalendarWeekHoursViewModule } from 'angular-calendar-week-hours-view';
+
 // import { AngularFireModule } from 'angularfire2';
 // import { AngularFirestoreModule } from 'angularfire2/firestore';
 
@@ -38,11 +36,6 @@ import { CalendarWeekHoursViewModule } from 'angular-calendar-week-hours-view';
     NgCalendarModule,
 
     BrowserAnimationsModule,
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory,
-    }),
-    CalendarWeekHoursViewModule
   ],
   providers: [
     StatusBar,

@@ -53,12 +53,12 @@
     <ion-row>
       <ion-col size="6">
         <ion-button (click)="createRandomEvents()" expand="block" fill="outline">
-          Add random events
+          Add random
         </ion-button>
       </ion-col>
       <ion-col size="6">
         <ion-button (click)="removeEvents()" expand="block" fill="outline">
-          Remove all events
+          Remove all
         </ion-button>
       </ion-col>
     </ion-row>
@@ -93,9 +93,18 @@
       endHour="20"
       step="30"
       startingDayWeek="1"
+      [monthviewDisplayEventTemplate]="template"
     >
     </calendar>
-   
+    
+    <ng-template #template let-view="view" let-row="row" let-col="col">
+      <div [class.with-event]="view.dates[row*7+col].events.length">
+        {{view.dates[row*7+col].label}}
+        <div class="indicator-container">
+          <div class="event-indicator" *ngFor="let e of view.dates[row*7+col].events"></div>
+        </div>
+      </div>
+    </ng-template>
 
   </ion-grid>
   

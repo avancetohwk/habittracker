@@ -68,6 +68,7 @@ export class DetailsPage implements OnInit {
 
             chart: {
                 height: '90%',
+                backgroundColor: 'transparent',
                 events: {
                     //render: renderIcons
                     load: function () {
