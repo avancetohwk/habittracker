@@ -5,8 +5,7 @@ import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more.src';
 import HighchartsSolidGauge from 'highcharts/modules/solid-gauge';
 import { CalendarComponent } from 'ionic2-calendar';
-import { formatDate } from '@angular/common';
-import { AlertController } from '@ionic/angular';
+import { isToday } from '../common/util';
 
 
 
@@ -22,13 +21,14 @@ export class DetailsPage implements OnInit {
   private habit: IHabit;
   isLoading:boolean = true;
   gaugeChart;
-  constructor(private route: ActivatedRoute, private router: Router, private alertCtrl: AlertController,@Inject(LOCALE_ID) private locale: string) {
+  constructor(private route: ActivatedRoute, private router: Router) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.habit= this.router.getCurrentNavigation().extras.state.habit;
         this.getGaugeChartData();
+        this.getCalendarData();
       }else{
-        this.router.navigateByUrl('/tabs');
+        //this.router.navigateByUrl('/tabs');
       }
     });
   }
@@ -144,13 +144,13 @@ export class DetailsPage implements OnInit {
 
 
   //calendar
-  eventSource = [];
+  eventSource = []; //All
   viewTitle: string;
   calendar = {
     mode: 'month',
     currentDate: new Date(),
   };
- 
+  selectedDateEventsCount:number = 0;
   selectedDate: Date;
  
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
@@ -169,83 +169,54 @@ export class DetailsPage implements OnInit {
     this.viewTitle = title;
   }
 
-  async onEventSelected(event) {
-    // Use Angular date pipe for conversion
-    let start = formatDate(event.startTime, 'medium', this.locale);
-    let end = formatDate(event.endTime, 'medium', this.locale);
- 
-    const alert = await this.alertCtrl.create({
-      header: event.title,
-      subHeader: event.desc,
-      message: 'From: ' + start + '<br><br>To: ' + end,
-      buttons: ['OK'],
-    });
-    alert.present();
+  async onCurrentDateChanged(eventCount){
+      this.selectedDateEventsCount = eventCount
   }
- 
-  createRandomEvents() {
-    var events = [];
-    for (var i = 0; i < 50; i += 1) {
-      var date = new Date();
-      var eventType = Math.floor(Math.random() * 2);
-      var startDay = Math.floor(Math.random() * 90) - 45;
-      var endDay = Math.floor(Math.random() * 2) + startDay;
-      var startTime;
-      var endTime;
-      if (eventType === 0) {
-        startTime = new Date(
-          Date.UTC(
-            date.getUTCFullYear(),
-            date.getUTCMonth(),
-            date.getUTCDate() + startDay
-          )
-        );
-        if (endDay === startDay) {
-          endDay += 1;
+
+  getCalendarData() {
+      var events = [];
+      console.log(this.habit);
+      var trackings = this.habit.Trackings;
+      trackings.forEach((el)=>{
+        if(isToday((<any>el.Date).toDate())){
+            this.selectedDateEventsCount = el.Frequency;
         }
-        endTime = new Date(
-          Date.UTC(
-            date.getUTCFullYear(),
-            date.getUTCMonth(),
-            date.getUTCDate() + endDay
-          )
-        );
-        events.push({
-          title: 'All Day - ' + i,
-          startTime: startTime,
-          endTime: endTime,
-          allDay: true,
-        });
-      } else {
-        var startMinute = Math.floor(Math.random() * 24 * 60);
-        var endMinute = Math.floor(Math.random() * 180) + startMinute;
-        startTime = new Date(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate() + startDay,
-          0,
-          date.getMinutes() + startMinute
-        );
-        endTime = new Date(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate() + endDay,
-          0,
-          date.getMinutes() + endMinute
-        );
-        events.push({
-          title: 'Event - ' + i,
-          startTime: startTime,
-          endTime: endTime,
-          allDay: false,
-        });
-      }
+        for(var i=1;i<=el.Frequency;i++){
+            events.push({
+                title: this.habit.Name + '-' + i,
+                startTime: (<any>el.Date).toDate(),
+                endTime: (<any>el.Date).toDate(),
+                allDay: false,
+            });
+        }
+      })
+      this.eventSource = events;
     }
-    console.log(events)
-    this.eventSource = events;
+
+  addFrequency(selectedDate){
+    //   selectedDate.events.push({
+    //     title: this.habit.Name,
+    //     startTime: new Date,
+    //     endTime: new Date,
+    //     allDay: false,
+    // });
+    // console.log(selectedDate);
+
+    this.selectedDateEventsCount++;
   }
- 
-  removeEvents() {
-    this.eventSource = [];
+
+  removeFrequency(selectedDate){
+    if(this.selectedDateEventsCount>0){
+        this.selectedDateEventsCount--;
+    }
+  }
+
+  resetFrequency(selectedDate){
+      this.selectedDateEventsCount = selectedDate.events.length;
+  }
+
+  saveFrequency(selectedDate){
+      //check if more or less.. get difference and add to firebase
+      
   }
 }

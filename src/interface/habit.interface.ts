@@ -17,3 +17,10 @@ export interface IHabitTracker{
     HabitId: string,
     Streak: number
 }
+
+export interface IHabitCalendarEvent{
+    title: string,
+    startTime: Date,
+    endTime: Date,
+    allDay: boolean
+}

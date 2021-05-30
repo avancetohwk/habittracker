@@ -17,6 +17,13 @@ export const getCurrentStreak = (latest):number =>{
   }
 }
 
+export const isToday = (someDate) => {
+  const today = new Date()
+  return someDate.getDate() == today.getDate() &&
+    someDate.getMonth() == today.getMonth() &&
+    someDate.getFullYear() == today.getFullYear()
+}
+
 @Injectable()
 export class ToastService{
     constructor(public toastController: ToastController) {}
