@@ -18,13 +18,13 @@ export class DetailsPage implements OnInit {
   private habit: IHabit;
   isLoading:boolean = true;
   gaugeChart;
-  selectedPoint;
   constructor(private route: ActivatedRoute, private router: Router) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.habit= this.router.getCurrentNavigation().extras.state.habit;
-        console.log(this.habit);
         this.getGaugeChartData();
+      }else{
+        this.router.navigateByUrl('/tabs');
       }
     });
   }
@@ -45,7 +45,7 @@ export class DetailsPage implements OnInit {
         'data': [{
             'color': Highcharts.getOptions().colors[0],
             //'radius': radius+'%',
-            'innerRadius': '80%',
+            'innerRadius': '70%',
             'outerRadius': '100%',
             'y': progress,
             'habitId': habit.Id,
@@ -63,18 +63,17 @@ export class DetailsPage implements OnInit {
         this.gaugeChart = Highcharts.chart('gaugeChartContainer', { 
 
             chart: {
-                height: '70%',
+                height: '90%',
                 events: {
                     //render: renderIcons
                     load: function () {
                     var self = this;
+                    // self.reflow ();
+                    // self.tooltip.refresh(self.series[0].data[0]);
                     setTimeout (function () {
                         self.reflow ();
                         self.tooltip.refresh(self.series[0].data[0]);
-                        console.log(self.series[0].data[0])
-                        parent.selectedPoint = self.series[0].data[0];
-                        Highcharts.fireEvent(self.series[0].data[0], 'click');
-                    }, 1000)
+                    }, 10)
                 }
                 }
             },
@@ -89,15 +88,15 @@ export class DetailsPage implements OnInit {
                 borderWidth: 0,
                 backgroundColor: 'none',
                 shadow: false,
-                style: {
-                    fontSize: '12px'
-                },
+                // style: {
+                //     fontSize: '12px'
+                // },
                 valueSuffix: '%',
-                pointFormat: '{series.name}<br><span style="font-size:2em; color: {point.color}; font-weight: bold">{point.y}</span>',
+                pointFormat: '<span style="font-size:1.25em; color: {point.color}; font-weight: bold">{point.y}</span>',
                 positioner: function (labelWidth) {
                     return {
                         x: (this.chart.chartWidth - labelWidth) / 2,
-                        y: (this.chart.plotHeight / 2) - 20
+                        y: (this.chart.plotHeight / 2) 
                     };
                 }
             },
@@ -120,15 +119,7 @@ export class DetailsPage implements OnInit {
                     },
                     linecap: 'round',
                     stickyTracking: false,
-                    rounded: true,
-                    point: {
-                        events: {
-                            click: function () {
-                                var currSelection = this;
-                                parent.selectedPoint = currSelection;
-                            }
-                        }
-                    }
+                    rounded: true
                 }
             },
             series: gaugeSeries
@@ -139,7 +130,6 @@ export class DetailsPage implements OnInit {
         charts.then(value =>{
           var self = this;
           setTimeout (function () {
-              console.log(self.isLoading)
               self.isLoading = false;
           }, 1000)
       });

@@ -14,12 +14,11 @@ import { NavigationExtras, Router } from '@angular/router';
 export class Tab2Page {
   
   isLoading:boolean = true;
+  isAddingTracking: boolean = false;
   isApp: boolean = false;
   habits: IHabit;//AngularFirestoreCollection<IHabit>;
   habitTrackings: IHabitTracker;//AngularFirestoreCollection<IHabitTracker>;
-  myChart;
-  myChart2;
-  selectedPoint;
+  
 
   constructor(private modalCtrl: ModalController,private toastCtrl: ToastController,
              private habitProvider: HabitProvider, private habitTrackingProvider: HabitTrackingProvider,
@@ -33,63 +32,44 @@ export class Tab2Page {
     this.habitProvider.GetHabits()
     .subscribe((data : any) => {
         if (data){
-        try{
-            this.habits = data;
-            console.log('habits: ')
-            console.log(this.habits)
-            const observables = []
-            for(let idx in this.habits){
-                var habit = this.habits[idx];
-                observables.push(this.habitTrackingProvider.GetHabitTrackingsByHabitId(habit.Id))
-                this.habitTrackingProvider.GetHabitTrackingsByHabitId(habit.Id).subscribe((data2: any) => {
-                    habit.Trackings = data2;
-                    console.log(habit)
-                })
-
-            }
-            console.log(observables)
-            zip(...observables)
-            .subscribe(trackings => {
-                // let finalTracking = el.Trackings[el.Trackings.length - 1];
-                // if(finalTracking != null){
-                //     if (this.isDateBeforeToday(finalTracking.Date.toDate())){
-                //         var todaysDate = new Date();
-                //         lineSeriesData.push([Date.UTC(todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate()), 0])
-                //     }
-                //     streak = this.getCurrentStreak(finalTracking);
-                // }
-                
-                for (let idx in trackings){
-                    var currTrackings = trackings[idx];
-                    this.habits[idx].Trackings = currTrackings;
-                    this.habits[idx].FinalTracking = currTrackings[(<any>currTrackings).length -1];
-                    this.habits[idx].CurrStreak = getCurrentStreak(this.habits[idx].FinalTracking);
+            try{
+                this.habits = data;
+                const observables = []
+                for(let idx in this.habits){
+                    var habit = this.habits[idx];
+                    observables.push(this.habitTrackingProvider.GetHabitTrackingsByHabitId(habit.Id))
+                    this.habitTrackingProvider.GetHabitTrackingsByHabitId(habit.Id).subscribe((data2: any) => {
+                        habit.Trackings = data2;
+                    })
                 }
-                console.log(this.habits)
-                //this.getGaugeChartData(this.habits)
-                // All observables in `observables` array have resolved and `dataArray` is an array of result of each observable
-            });
-        }catch(Exception){
-            this.habits = null;
-        }finally{
-            
+                zip(...observables)
+                .subscribe(trackings => {
+                    for (let idx in trackings){
+                        var currTrackings = trackings[idx];
+                        this.habits[idx].Trackings = currTrackings;
+                        this.habits[idx].FinalTracking = currTrackings[(<any>currTrackings).length -1];
+                        this.habits[idx].CurrStreak = getCurrentStreak(this.habits[idx].FinalTracking);
+                    }
+                });
+            }catch(Exception){
+                this.habits = null;
+            }finally{
+                this.isAddingTracking = false;
+            }
         }
-        }
-        // this.highlights = data.content as IWiseInfoTVHighlights[];
     },
     (error) => {
         // this.loadError = true;
         this.toastService.presentToast(error.message);
         
     },()=>{
-        console.log(this.habits)
     });
   }
 
 
   addTracking(habit:IHabit){
-    
-   
+    console.log('adding tracking')
+    this.isAddingTracking = true;
     if(habit.FinalTracking != null && !isDateBeforeToday((<any>habit.FinalTracking.Date).toDate())){
         //latestDate is today, just update frequency
         var finalTracking = habit.FinalTracking;
@@ -100,6 +80,7 @@ export class Tab2Page {
         }
         ,(error) => {
             // this.loadError = true;
+            this.isAddingTracking = false;
             this.toastService.presentToast(error.message);
             
         });
@@ -119,6 +100,7 @@ export class Tab2Page {
         },
         (error) => {
             // this.loadError = true;
+            this.isAddingTracking = false;
             this.toastService.presentToast(error.message);
             
         });

@@ -16,11 +16,14 @@
     <ion-item-sliding *ngFor="let habit of habits"  >
       <ion-item (click)="goToDetailsPage(habit)"> 
         <ion-label >{{habit?.Name}}</ion-label>
+        <!-- <ion-note color="dark" slot="end">{{habit?.CurrStreak}}</ion-note> -->
         <ion-badge slot="end">{{habit?.CurrStreak}}</ion-badge>
       </ion-item>
       <ion-item-options side="end">
-        <ion-item-option (click)="addTracking(habit)">
-          <ion-icon style="font-size: 2em;" name="sad-outline"></ion-icon>
+        <ion-item-option >
+          <ion-icon *ngIf="!isAddingTracking" (click)="addTracking(habit)" name="sad-outline"></ion-icon>
+          <ion-ripple-effect></ion-ripple-effect>
+          <ion-spinner *ngIf="isAddingTracking" name="crescent"></ion-spinner>
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
