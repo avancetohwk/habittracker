@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -13,6 +13,17 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { HabitProvider } from 'src/providers/habits/habits';
 import { HabitTrackingProvider } from 'src/providers/habitTracker/habitTracker';
 import { ToastService } from './common/util';
+
+import { NgCalendarModule  } from 'ionic2-calendar';
+import { registerLocaleData } from '@angular/common';
+import localeEn from '@angular/common/locales/en';
+registerLocaleData(localeEn);
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+ 
+import { CalendarModule, CalendarDateFormatter, CalendarEventTitleFormatter, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { CalendarWeekHoursViewModule } from 'angular-calendar-week-hours-view';
 // import { AngularFireModule } from 'angularfire2';
 // import { AngularFirestoreModule } from 'angularfire2/firestore';
 
@@ -24,6 +35,14 @@ import { ToastService } from './common/util';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    NgCalendarModule,
+
+    BrowserAnimationsModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
+    CalendarWeekHoursViewModule
   ],
   providers: [
     StatusBar,
@@ -31,7 +50,8 @@ import { ToastService } from './common/util';
     ToastService,
     HabitProvider,
     HabitTrackingProvider,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: LOCALE_ID, useValue: 'en_EN' }
   ],
   bootstrap: [AppComponent]
 }) 
