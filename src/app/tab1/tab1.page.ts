@@ -31,8 +31,8 @@ export class Tab1Page {
     selectedPoint;
 
     constructor(private modalCtrl: ModalController,private toastCtrl: ToastController, private habitProvider: HabitProvider, private habitTrackingProvider: HabitTrackingProvider) {
-        this.getHabitTrackings();
-        this.getHabits();
+        // this.getHabitTrackings();
+        // this.getHabits();
 
     }
 

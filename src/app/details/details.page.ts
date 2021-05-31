@@ -6,6 +6,7 @@ import HighchartsMore from 'highcharts/highcharts-more.src';
 import HighchartsSolidGauge from 'highcharts/modules/solid-gauge';
 import { CalendarComponent } from 'ionic2-calendar';
 import { isToday } from '../common/util';
+import { JsonProvider } from 'src/providers/json/json';
 
 
 
@@ -21,7 +22,7 @@ export class DetailsPage implements OnInit {
   private habit: IHabit;
   isLoading:boolean = true;
   gaugeChart;
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(private route: ActivatedRoute, private router: Router, private jsonProvider: JsonProvider) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.habit= this.router.getCurrentNavigation().extras.state.habit;
@@ -29,6 +30,11 @@ export class DetailsPage implements OnInit {
         this.getCalendarData();
       }else{
         //this.router.navigateByUrl('/tabs');
+
+        //get from JSON during dev
+        this.habit = this.jsonProvider.GetHabitWithTrackingsByHabitId("1");
+        this.getGaugeChartData();
+        this.getCalendarData();
       }
     });
   }
@@ -68,7 +74,8 @@ export class DetailsPage implements OnInit {
 
             chart: {
                 height: '90%',
-                backgroundColor: 'transparent',
+                plotBackgroundColor: 'transparent',
+                backgroundColor:'transparent',
                 events: {
                     //render: renderIcons
                     load: function () {
@@ -78,7 +85,7 @@ export class DetailsPage implements OnInit {
                     setTimeout (function () {
                         self.reflow ();
                         self.tooltip.refresh(self.series[0].data[0]);
-                    }, 10)
+                    }, 100)
                 }
                 }
             },
@@ -178,14 +185,16 @@ export class DetailsPage implements OnInit {
       console.log(this.habit);
       var trackings = this.habit.Trackings;
       trackings.forEach((el)=>{
-        if(isToday((<any>el.Date).toDate())){
+
+        var date = typeof(el.Date) == "string"? new Date(el.Date):(<any>el.Date).toDate(); //if data is from json, el.date is a string
+        if(isToday(date)){
             this.selectedDateEventsCount = el.Frequency;
         }
         for(var i=1;i<=el.Frequency;i++){
             events.push({
                 title: this.habit.Name + '-' + i,
-                startTime: (<any>el.Date).toDate(),
-                endTime: (<any>el.Date).toDate(),
+                startTime: date,
+                endTime: date,
                 allDay: false,
             });
         }

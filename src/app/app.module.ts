@@ -20,6 +20,7 @@ import localeEn from '@angular/common/locales/en';
 registerLocaleData(localeEn);
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JsonProvider } from 'src/providers/json/json';
  
 
 // import { AngularFireModule } from 'angularfire2';
@@ -43,6 +44,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ToastService,
     HabitProvider,
     HabitTrackingProvider,
+    JsonProvider,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: LOCALE_ID, useValue: 'en_EN' }
   ],
