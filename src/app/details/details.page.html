@@ -149,14 +149,18 @@
 
 <!-- List Headers in Lists -->
 <ion-list>
-  <ion-list-header lines="inset">
+  <ion-list-header lines="none">
     <ion-label><h1>Streak</h1></ion-label>
-    <ion-button ><ion-icon name="filter-outline"></ion-icon></ion-button>
   </ion-list-header>
   <ion-item lines="none">
-    <ion-label color="primary">
-      <h1>I got you babe</h1>
-    </ion-label>
+    <ion-segment scrollable class="streak-segment">
+      <div *ngFor="let s of streaks;index as idx">
+        <div class="notify-badge" [ngClass]="{'gold':idx==0,'silver':idx==1,'bronze':idx==2}"></div>
+        <ion-segment-button class="streak-segment-btn" value="home">
+          <h2>{{s.Streak}}</h2><p>{{s.StartDate}} - {{s.EndDate}}</p>
+        </ion-segment-button>
+      </div>
+    </ion-segment>
   </ion-item>
 </ion-list>
 

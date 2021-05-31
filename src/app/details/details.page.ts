@@ -5,9 +5,10 @@ import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more.src';
 import HighchartsSolidGauge from 'highcharts/modules/solid-gauge';
 import { CalendarComponent } from 'ionic2-calendar';
-import { isToday } from '../common/util';
+import { isToday, parseDate } from '../common/util';
 import { JsonProvider } from 'src/providers/json/json';
 import { PopoverController } from '@ionic/angular';
+import * as moment from 'moment';
 
 
 
@@ -23,6 +24,7 @@ export class DetailsPage implements OnInit {
   private habit: IHabit;
   isLoading:boolean = true;
   gaugeChart;
+  streaks;
   constructor(private route: ActivatedRoute, private router: Router, private jsonProvider: JsonProvider, private popoverController:PopoverController) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
@@ -37,6 +39,7 @@ export class DetailsPage implements OnInit {
         // this.getGaugeChartData();
         // this.getCalendarData();
       }
+      this.getStreak();
     });
     
   }
@@ -201,7 +204,7 @@ export class DetailsPage implements OnInit {
       var trackings = this.habit.Trackings;
       trackings.forEach((el)=>{
 
-        var date = typeof(el.Date) == "string"? new Date(el.Date):(<any>el.Date).toDate(); //if data is from json, el.date is a string
+        var date = parseDate(el.Date); //if data is from json, el.date is a string
         if(isToday(date)){
             this.selectedDateEventsCount = el.Frequency;
         }
@@ -242,5 +245,24 @@ export class DetailsPage implements OnInit {
   saveFrequency(selectedDate){
       //check if more or less.. get difference and add to firebase
       
+  }
+
+  //streak
+  getStreak(){
+    this.streaks = this.habit.Trackings.sort((elemA, elemB) => {
+      if (elemA.Streak > elemB.Streak) {
+        return -1;
+      } else if (elemB.Streak > elemA.Streak) {
+        return 1;
+      }
+      return 0;
+    }).slice(0, 5).map(s=>{
+      return {
+        "Streak":s.Streak,
+        "EndDate": moment(parseDate(s.Date)).format("MMM Do"),
+        "StartDate":moment(parseDate(s.Date)).subtract(s.Streak,"days").format("MMM Do")
+      }
+    });
+
   }
 }

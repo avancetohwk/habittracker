@@ -114,3 +114,43 @@ figure {
 }
 
 /* @end */
+$gold: blue;
+$silver: hsl(77 -100% 80%);
+$bronze: hsl(37 62% -46%);
+
+.streak-segment{
+    padding:0.5em;
+}
+
+.notify-badge{
+    display:block;
+    position: absolute;
+    height: 2em;
+    width: 1.5em;
+    z-index: 100;
+    top: -0.05em;
+    
+}
+
+.gold{
+    background-size: cover;
+    background-image: url('../../../resources/images/gold1.png');
+}
+
+.silver{
+    background-size: cover;
+    background-image: url('../../../resources/images/silver1.png');
+}
+
+.bronze{
+    background-size: cover;
+    background-image: url('../../../resources/images/bronze1.png');
+    color:$bronze
+}
+
+.streak-segment-btn{
+    border: $gold 0.15em solid;
+    border-radius: 1em;
+    box-shadow: inset 0 0 0.5em 0 $gold, 0 0 0.5em 0 $gold;
+    margin-right: 0.5em;
+}

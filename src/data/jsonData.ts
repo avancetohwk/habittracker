@@ -18,91 +18,91 @@ export const Habits = [{
 
 export const HabitTrackings = [{
     "Id":"sad",
-    "Date": "2021-05-16T00:00:00",
+    "Date": new Date("2021-05-16T00:00:00"),
     "Frequency":1,
     "HabitId":"1",
     "Streak":12
 },{
     "Id":"sad",
-    "Date": "2021-05-17T00:00:00",
+    "Date": new Date("2021-05-17T00:00:00"),
     "Frequency":2,
     "HabitId":"1",
     "Streak":0
 },{
     "Id":"sad",
-    "Date": "2021-05-19T00:00:00",
+    "Date": new Date("2021-05-19T00:00:00"),
     "Frequency":1,
     "HabitId":"1",
     "Streak":2
 },{
     "Id":"sad",
-    "Date": "2021-05-22T00:00:00",
+    "Date": new Date("2021-05-22T00:00:00"),
     "Frequency":5,
     "HabitId":"1",
     "Streak":3
 },{
     "Id":"sad",
-    "Date": "2021-05-27T00:00:00",
+    "Date": new Date("2021-05-27T00:00:00"),
     "Frequency":1,
     "HabitId":"1",
     "Streak":5
 },{
     "Id":"sad",
-    "Date": "2021-05-30T00:00:00",
+    "Date": new Date("2021-05-30T00:00:00"),
     "Frequency":1,
     "HabitId":"1",
     "Streak":3
 },{
     "Id":"sad",
-    "Date": "2021-05-31T00:00:00",
+    "Date": new Date("2021-05-31T00:00:00"),
     "Frequency":1,
     "HabitId":"1",
     "Streak":1
 },{
     "Id":"sad",
-    "Date": "2021-05-15T00:00:00",
+    "Date": new Date("2021-05-15T00:00:00"),
     "Frequency":1,
     "HabitId":"2",
     "Streak":14
 },{
     "Id":"sad",
-    "Date": "2021-05-18T00:00:00",
+    "Date": new Date("2021-05-18T00:00:00"),
     "Frequency":1,
     "HabitId":"2",
     "Streak":3
 },{
     "Id":"sad",
-    "Date": "2021-05-22T00:00:00",
+    "Date": new Date("2021-05-22T00:00:00"),
     "Frequency":1,
     "HabitId":"2",
     "Streak":4
 },{
     "Id":"sad",
-    "Date": "2021-05-28T00:00:00",
+    "Date": new Date("2021-05-28T00:00:00"),
     "Frequency":1,
     "HabitId":"2",
     "Streak":6
 },{
     "Id":"sad",
-    "Date": "2021-05-12T00:00:00",
+    "Date": new Date("2021-05-12T00:00:00"),
     "Frequency":1,
     "HabitId":"3",
     "Streak":22
 },{
     "Id":"sad",
-    "Date": "2021-05-18T00:00:00",
+    "Date": new Date("2021-05-18T00:00:00"),
     "Frequency":2,
     "HabitId":"3",
     "Streak":6
 },{
     "Id":"sad",
-    "Date": "2021-05-22T00:00:00",
+    "Date": new Date("2021-05-22T00:00:00"),
     "Frequency":1,
     "HabitId":"3",
     "Streak":4
 },{
     "Id":"sad",
-    "Date": "2021-05-29T00:00:00",
+    "Date": new Date("2021-05-29T00:00:00"),
     "Frequency":1,
     "HabitId":"3",
     "Streak":7
@@ -116,7 +116,7 @@ export const HabitsWithTrackings = [{
     "Trackings": HabitTrackings.filter(h=>{return h.HabitId == "1"}),
     "FinalTracking":{
         "Id":"sad",
-        "Date": "2021-05-31T00:00:00",
+        "Date": new Date("2021-05-31T00:00:00"),
         "Frequency":1,
         "HabitId":"1",
         "Streak":1
@@ -130,7 +130,7 @@ export const HabitsWithTrackings = [{
     "Trackings": HabitTrackings.filter(h=>{return h.HabitId == "2"}),
     "FinalTracking":{
         "Id":"sad",
-        "Date": "2021-05-28T00:00:00",
+        "Date": new Date("2021-05-28T00:00:00"),
         "Frequency":1,
         "HabitId":"2",
         "Streak":6
@@ -144,7 +144,7 @@ export const HabitsWithTrackings = [{
     "Trackings": HabitTrackings.filter(h=>{return h.HabitId == "3"}),
     "FinalTracking":{
         "Id":"sad",
-        "Date": "2021-05-29T00:00:00",
+        "Date": new Date("2021-05-29T00:00:00"),
         "Frequency":1,
         "HabitId":"3",
         "Streak":7
