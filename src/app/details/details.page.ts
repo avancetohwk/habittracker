@@ -7,6 +7,7 @@ import HighchartsSolidGauge from 'highcharts/modules/solid-gauge';
 import { CalendarComponent } from 'ionic2-calendar';
 import { isToday } from '../common/util';
 import { JsonProvider } from 'src/providers/json/json';
+import { PopoverController } from '@ionic/angular';
 
 
 
@@ -22,25 +23,38 @@ export class DetailsPage implements OnInit {
   private habit: IHabit;
   isLoading:boolean = true;
   gaugeChart;
-  constructor(private route: ActivatedRoute, private router: Router, private jsonProvider: JsonProvider) {
+  constructor(private route: ActivatedRoute, private router: Router, private jsonProvider: JsonProvider, private popoverController:PopoverController) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.habit= this.router.getCurrentNavigation().extras.state.habit;
-        this.getGaugeChartData();
-        this.getCalendarData();
+        // this.getGaugeChartData();
+        // this.getCalendarData();
       }else{
         //this.router.navigateByUrl('/tabs');
 
         //get from JSON during dev
         this.habit = this.jsonProvider.GetHabitWithTrackingsByHabitId("1");
+        // this.getGaugeChartData();
+        // this.getCalendarData();
+      }
+    });
+    
+  }
+
+
+  
+
+  ngOnInit() {  
+  }
+
+  ionViewDidEnter(){
+    document.onreadystatechange = () => {
+      if (document.readyState === 'complete') {
+        console.log("My width is:", (document.getElementById('gaugeChartContainer') as HTMLFormElement).clientWidth);
         this.getGaugeChartData();
         this.getCalendarData();
       }
-    });
-  }
-
-  ngOnInit() {  
-    
+    };
   }
   
   getGaugeChartData(){
@@ -68,6 +82,7 @@ export class DetailsPage implements OnInit {
   }
 
   buildCharts(gaugeSeries){
+    
     var parent = this;
     const charts = new Promise<void>((resolve,reject) =>{
         this.gaugeChart = Highcharts.chart('gaugeChartContainer', { 
@@ -79,14 +94,14 @@ export class DetailsPage implements OnInit {
                 events: {
                     //render: renderIcons
                     load: function () {
-                    var self = this;
-                    // self.reflow ();
-                    // self.tooltip.refresh(self.series[0].data[0]);
-                    setTimeout (function () {
+                      var self = this;
+                      // self.reflow ();
+                      // self.tooltip.refresh(self.series[0].data[0]);
+                      setTimeout (function () {
                         self.reflow ();
                         self.tooltip.refresh(self.series[0].data[0]);
-                    }, 100)
-                }
+                      }, 0)
+                    }
                 }
             },
             credits: {
