@@ -151,6 +151,6 @@ $bronze: hsl(37 62% -46%);
 .streak-segment-btn{
     border: $gold 0.15em solid;
     border-radius: 1em;
-    box-shadow: inset 0 0 0.5em 0 $gold, 0 0 0.5em 0 $gold;
+    box-shadow: inset 0 0 0.5em 0 currentColor, 0 0 0.5em 0 currentColor;
     margin-right: 0.5em;
 }
