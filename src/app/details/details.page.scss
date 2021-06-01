@@ -79,20 +79,45 @@ ion-card{
 
 
 /* @group main calendar */
+.calendar-title{
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+
+
 .indicator-container {
-  padding-left: 0.5rem;
-  padding-bottom: 0.4rem;
+  display: flex;
+  justify-content: space-evenly;
 }
  
 .event-indicator {
   background: var(--ion-color-success);
-  width: 5px;
-  height: 5px;
-  border-radius: 5px;
+  width: 0.2em;
+  height: 0.2em;
+  border-radius: 0.2em;
   display: table-cell;
 }
  
 :host ::ng-deep {
+    .monthview-container{
+        height: auto !important;
+    }
+
+    .monthview-datetable td{
+        padding:0.4em !important;
+    }
+
+    .monthview-datetable td.monthview-primary-with-event{
+        padding-bottom:0.2em !important;
+    }
+
+    .monthview-datetable td.monthview-secondary-with-event{
+        padding-bottom:0.2em !important;
+    }
 //   .monthview-primary-with-event {
 //     background-color: white !important;
 //   }
