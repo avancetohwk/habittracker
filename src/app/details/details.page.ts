@@ -44,20 +44,7 @@ export class DetailsPage implements OnInit {
         // this.getGaugeChartData();
         // this.getCalendarData();
       }
-      if(document.readyState === "complete"){
-        console.log("document ready")
-        this.init()
-      }else{
-        console.log("document Not ready, waiting on state change.")
-        document.onreadystatechange = () => {
-          console.log('state changed - ' + document.readyState);
-          if (document.readyState === 'complete') {
-            
-            this.init()
-            
-          }
-        };
-      }
+      
       this.getStreak();
       
     });
@@ -72,7 +59,7 @@ export class DetailsPage implements OnInit {
       chart: {
           //backgroundColor: 'black'
       },
-      colors: ['#fff', '#0000ff','#F62366', '#9DFF02', '#0CCDD6'],
+      colors: ['#fff', '#07cdff','#F62366', '#9DFF02', '#0CCDD6'],
       // title: {
       //     style: {
       //         color: 'silver'
@@ -87,6 +74,7 @@ export class DetailsPage implements OnInit {
   }
 
   init(){
+    console.log("My bubble width is:", (document.getElementById('bubbleChartContainer') as HTMLFormElement).clientWidth);
     console.log("My width is:", (document.getElementById('gaugeChartContainer') as HTMLFormElement).clientWidth);
     this.getGaugeChartData();
     this.getCalendarData();
@@ -95,18 +83,37 @@ export class DetailsPage implements OnInit {
   ionViewDidEnter(){
     
   }
+
+  ngAfterViewInit() {
+    console.log(this.ngAfterViewInit)
+    if(document.readyState === "complete"){
+      console.log("document ready")
+      this.init()
+    }else{
+      console.log("document Not ready, waiting on state change.")
+      document.onreadystatechange = () => {
+        console.log('state changed - ' + document.readyState);
+        if (document.readyState === 'complete') {
+          
+          this.init()
+          
+        }
+      };
+    }
+ }
+
   
   getGaugeChartData(){
     var habit = this.habit;
     var gaugeSeries = [];
-
+    console.log(habit)
     //Gauge Series
     var progress = Math.min(100,Math.ceil(habit.CurrStreak/habit.TargetDays * 100));
     var data = {
         'type': 'solidgauge',
         'name': habit.Name,
         'data': [{
-            'color': '#fff',
+            'color': Highcharts.getOptions().colors[1],
             // 'className':'blue-band',
             //'radius': radius+'%',
             'innerRadius': '70%',
@@ -130,30 +137,12 @@ export class DetailsPage implements OnInit {
       var year = moment(date).format("yyyy");
       var month = moment(date).format("MMM");
       var key = moment(date).format("MMM yyyy");
-      console.log(key);
-
-      //[Month, Count, Sum(Frequency)]
-      // if(prev[year]){
-      //   //(prev[year][month]?prev[year][month].data.push(cur):prev[year][month]= {group: String(month), data: [cur]});
-      // }else{
-      //   prev[year] = {group: String(year), data: {String(month): [cur]}}
-      //   console.log(prev)
-      // }
-      // (prev[year]?prev[month].data.push(cur)
-      
-      // :prev[month]= {group: String(month), data: [cur]});
       (prev[key]?prev[key] = [prev[key][0],prev[key][1]+=1, prev[key][2]+=cur.Frequency]:prev[key]= [date.getMonth()+1,1,cur.Frequency]);
 
       //(prev[key]?prev[key].data.push(cur):prev[key]= {group: String(key), data: [cur],year: year});
       return prev;
     }, {});
     var result = Object.keys(groups).map(function(k){ return groups[k]; });
-    console.log(result)
-    console.log(groups)
-    // habit.Trackings.map(t=>{
-    //   return [t.Date.get]
-    // }
-
     
     this.buildCharts(gaugeSeries, result);
   }
@@ -210,7 +199,7 @@ export class DetailsPage implements OnInit {
                 background: [{ // Track for Move
                   outerRadius: '100%',
                   innerRadius: '70%',
-                  backgroundColor: Highcharts.color(Highcharts.getOptions().colors[0])
+                  backgroundColor: Highcharts.color(Highcharts.getOptions().colors[1])
                           .setOpacity(0.1)
                           .get(),
                       borderWidth: 0

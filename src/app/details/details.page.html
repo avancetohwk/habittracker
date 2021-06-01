@@ -9,9 +9,14 @@
 
 <ion-content>
   <ion-grid>
+    
     <ion-row >
+      
+        
+      
       <ion-col size="7"> 
-        <ion-item class="stat-item">
+        <ion-card class="neon-border">
+        <ion-row class="stat-item">
           <div >
             <ion-icon slot="start"  name="flame-outline"></ion-icon>
             <ion-label>
@@ -19,8 +24,8 @@
               <p >Current Streak</p>
             </ion-label> 
           </div>
-        </ion-item>
-        <ion-item class="stat-item">
+        </ion-row>
+        <ion-row class="stat-item">
           <div >
             <ion-icon slot="start"  name="sad-outline"></ion-icon>
             <ion-label>
@@ -28,14 +33,15 @@
               <p>Previous failure</p>
             </ion-label> 
           </div>
-        </ion-item>
-        
+        </ion-row>
+      </ion-card>
       </ion-col>
       <ion-col size="5"> 
         <div id="gaugeChartContainer"></div>
       </ion-col>
+    
     </ion-row>
-
+  
 
     <ion-segment [(ngModel)]="calendar.mode">
       <ion-segment-button value="month">
@@ -135,8 +141,8 @@
             <h1>{{selectedDateEventsCount}}</h1>
           </ion-label>
           <ion-icon class="stepper-btn" (click)="addFrequency(selectedDate)" name="add-circle-outline"></ion-icon>
-          <ion-icon (click)=resetFrequency(selectedDate)  name="refresh-outline"></ion-icon>
-          <ion-icon  name="save-outline"></ion-icon>
+          <ion-icon class="frequency-icon" (click)=resetFrequency(selectedDate)  name="refresh-outline"></ion-icon>
+          <ion-icon class="frequency-icon" name="save-outline"></ion-icon>
           
           <!-- <ion-button style="margin:0" fill="outline" (click)=resetFrequency(selectedDate) slot="end"><ion-icon  name="refresh-outline"></ion-icon></ion-button>
           <ion-button style="margin:0" fill="outline"  slot="end"><ion-icon  name="save-outline"></ion-icon></ion-button> -->
@@ -156,7 +162,7 @@
     <ion-segment scrollable class="streak-segment">
       <div *ngFor="let s of streaks;index as idx">
         <div class="notify-badge" [ngClass]="{'gold':idx==0,'silver':idx==1,'bronze':idx==2}"></div>
-        <ion-segment-button class="streak-segment-btn" value="home">
+        <ion-segment-button class="streak-segment-btn neon-border" value="home">
           <h2>{{s.Streak}}</h2><p>{{s.StartDate}} - {{s.EndDate}}</p>
         </ion-segment-button>
       </div>

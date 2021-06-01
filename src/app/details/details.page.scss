@@ -13,6 +13,50 @@
     }
 }
 
+ion-card{
+    color: var(--ion-color-primary);
+    padding:0.5em;
+}
+
+.neon-border{
+    border: currentColor 0.15em solid;
+    box-shadow: inset 0 0 0.75em 0 currentColor, 0 0 0.75em 0 currentColor;
+}
+
+#gaugeChartContainer{
+    position: relative;
+    border-radius:30%;
+}
+
+#gaugeChartContainer::before{
+    content: "";
+    position: absolute;
+    background: var(--ion-color-primary);
+    top:48%;
+    left:0;
+    height: 100%;
+    width: 100%;
+
+    transform: perspective(1em) rotateX(40deg) scale(1, 0.35);
+    filter:blur(2.25em);
+    opacity:0.4;
+
+}
+
+#gaugeChartContainer::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 0 2em 0.5em var(--ion-color-primary);
+    opacity: 0;
+    background-color: var(--ion-color-primary);
+    z-index: -1;
+    transition: opacity 100ms linear;
+  }
+
 .event-details-item{
     .stepper-btn{
         font-size: 1.2em;
@@ -80,7 +124,7 @@ figure {
 		position: absolute;
 		top: -1px;
 		
-		background-color: #fa565a;
+		background-color: var(--ion-color-primary);//#fa565a;
 		border-radius: 10px 10px 0 0;
 		border-bottom: 3px solid #e5e5e5;
 		
@@ -114,9 +158,10 @@ figure {
 }
 
 /* @end */
-$gold: blue;
-$silver: hsl(77 -100% 80%);
-$bronze: hsl(37 62% -46%);
+
+.frequency-icon{
+    color: var(--ion-color-primary)
+}
 
 .streak-segment{
     padding:0.5em;
@@ -145,12 +190,11 @@ $bronze: hsl(37 62% -46%);
 .bronze{
     background-size: cover;
     background-image: url('../../../resources/images/bronze1.png');
-    color:$bronze
 }
 
 .streak-segment-btn{
-    border: $gold 0.15em solid;
+    color: var(--ion-color-primary);
     border-radius: 1em;
-    box-shadow: inset 0 0 0.75em 0 $gold, 0 0 0.75em 0 $gold;
+    
     margin-right: 0.5em;
 }
