@@ -24,31 +24,42 @@ export class DetailsPage implements OnInit {
   private habit: IHabit;
   isLoading:boolean = true;
   gaugeChart;
+  bubbleChart;
   streaks;
   parseDate;
   constructor(private route: ActivatedRoute, private router: Router, private jsonProvider: JsonProvider, private popoverController:PopoverController) {
     this.parseDate = parseDate;
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
+        console.log('router')
         this.habit= this.router.getCurrentNavigation().extras.state.habit;
+        console.log(this.habit)
         // this.getGaugeChartData();
         // this.getCalendarData();
       }else{
         //this.router.navigateByUrl('/tabs');
-
+        console.log('hardcode')
         //get from JSON during dev
         this.habit = this.jsonProvider.GetHabitWithTrackingsByHabitId("1");
         // this.getGaugeChartData();
         // this.getCalendarData();
       }
+      if(document.readyState === "complete"){
+        console.log("document ready")
+        this.init()
+      }else{
+        console.log("document Not ready, waiting on state change.")
+        document.onreadystatechange = () => {
+          console.log('state changed - ' + document.readyState);
+          if (document.readyState === 'complete') {
+            
+            this.init()
+            
+          }
+        };
+      }
       this.getStreak();
-      document.onreadystatechange = () => {
-        if (document.readyState === 'complete') {
-          console.log("My width is:", (document.getElementById('gaugeChartContainer') as HTMLFormElement).clientWidth);
-          this.getGaugeChartData();
-          this.getCalendarData();
-        }
-      };
+      
     });
     
   }
@@ -57,27 +68,32 @@ export class DetailsPage implements OnInit {
   
 
   ngOnInit() {  
-    if (!Highcharts.theme) {
-      Highcharts.setOptions({
-          chart: {
-              backgroundColor: 'black'
-          },
-          colors: ['#fff','#F62366', '#9DFF02', '#0CCDD6'],
-          // title: {
-          //     style: {
-          //         color: 'silver'
-          //     }
-          // },
-          // tooltip: {
-          //     style: {
-          //         color: 'silver'
-          //     }
-          // }
-      });
+    Highcharts.setOptions({
+      chart: {
+          //backgroundColor: 'black'
+      },
+      colors: ['#fff', '#0000ff','#F62366', '#9DFF02', '#0CCDD6'],
+      // title: {
+      //     style: {
+      //         color: 'silver'
+      //     }
+      // },
+      // tooltip: {
+      //     style: {
+      //         color: 'silver'
+      //     }
+      // }
+  });
   }
+
+  init(){
+    console.log("My width is:", (document.getElementById('gaugeChartContainer') as HTMLFormElement).clientWidth);
+    this.getGaugeChartData();
+    this.getCalendarData();
   }
 
   ionViewDidEnter(){
+    
   }
   
   getGaugeChartData(){
@@ -102,10 +118,47 @@ export class DetailsPage implements OnInit {
         }]
     }
     gaugeSeries.push(data);
-    this.buildCharts(gaugeSeries);
+
+    //bubbleSeries
+    var currYear = new Date().getFullYear();
+    habit.Trackings.filter(t=>parseDate(t.Date).getFullYear() == currYear).forEach(t=>{
+
+    })
+    var groups = habit.Trackings.filter(t=>parseDate(t.Date).getFullYear() == currYear).reduce((prev, cur)=> {
+      var date = parseDate(cur.Date);
+      
+      var year = moment(date).format("yyyy");
+      var month = moment(date).format("MMM");
+      var key = moment(date).format("MMM yyyy");
+      console.log(key);
+
+      //[Month, Count, Sum(Frequency)]
+      // if(prev[year]){
+      //   //(prev[year][month]?prev[year][month].data.push(cur):prev[year][month]= {group: String(month), data: [cur]});
+      // }else{
+      //   prev[year] = {group: String(year), data: {String(month): [cur]}}
+      //   console.log(prev)
+      // }
+      // (prev[year]?prev[month].data.push(cur)
+      
+      // :prev[month]= {group: String(month), data: [cur]});
+      (prev[key]?prev[key] = [prev[key][0],prev[key][1]+=1, prev[key][2]+=cur.Frequency]:prev[key]= [date.getMonth()+1,1,cur.Frequency]);
+
+      //(prev[key]?prev[key].data.push(cur):prev[key]= {group: String(key), data: [cur],year: year});
+      return prev;
+    }, {});
+    var result = Object.keys(groups).map(function(k){ return groups[k]; });
+    console.log(result)
+    console.log(groups)
+    // habit.Trackings.map(t=>{
+    //   return [t.Date.get]
+    // }
+
+    
+    this.buildCharts(gaugeSeries, result);
   }
 
-  buildCharts(gaugeSeries){
+  buildCharts(gaugeSeries, bubbleSeries){
     
     var parent = this;
     const charts = new Promise<void>((resolve,reject) =>{
@@ -190,6 +243,66 @@ export class DetailsPage implements OnInit {
             series: gaugeSeries
         });
 
+        this.bubbleChart = Highcharts.chart("bubbleChartContainer",{
+
+          chart: {
+            type: 'bubble',
+            plotBorderWidth: 0,
+            zoomType: 'xy',
+            backgroundColor: 'transparent',
+            events: {
+              //render: renderIcons
+              load: function () {
+                var self = this;
+                // self.reflow ();
+                // self.tooltip.refresh(self.series[0].data[0]);
+                setTimeout (function () {
+                  self.reflow ();
+                }, 0)
+              }
+          }
+          },
+          legend:{
+            enabled:false,
+          },
+          title: {
+            text: null
+          },
+        
+          xAxis: {
+            gridLineWidth: 0,
+            accessibility: {
+              rangeDescription: 'Range: 0 to 100.'
+            },
+            title:null
+          },
+        
+          yAxis: {
+            gridLineWidth: 0,
+            title:null,
+            startOnTick: false,
+            endOnTick: false,
+            accessibility: {
+              rangeDescription: 'Range: 0 to 100.'
+            }
+          },
+          series: [{
+            type:"bubble",
+            data: bubbleSeries,
+            marker: {
+              fillColor: {
+                radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+                stops: [
+                  [0, 'rgba(255,255,255,0.5)'],
+                  [1, Highcharts.color(Highcharts.getOptions().colors[1]).setOpacity(0.5).get('rgba').toString()]
+                ]
+              }
+            }
+          }]
+          
+        
+        });
+
         resolve();
         
         charts.then(value =>{
@@ -200,7 +313,6 @@ export class DetailsPage implements OnInit {
       });
     })
   }
-
 
 
   //calendar
@@ -300,4 +412,8 @@ export class DetailsPage implements OnInit {
     });
 
   }
+
+  //average
+
+
 }
