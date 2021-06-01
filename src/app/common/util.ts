@@ -17,6 +17,10 @@ export const getCurrentStreak = (latest):number =>{
   }
 }
 
+export const parseDate=(input)=>{
+  return (input instanceof Date)? input:(<any>input).toDate()
+}
+
 export const isToday = (someDate) => {
   const today = new Date()
   return someDate.getDate() == today.getDate() &&
