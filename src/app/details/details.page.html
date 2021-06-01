@@ -15,7 +15,7 @@
           <div >
             <ion-icon slot="start"  name="flame-outline"></ion-icon>
             <ion-label>
-              <h2>10/12</h2>
+              <h2>{{habit.CurrStreak}}/{{habit.TargetDays}}</h2>
               <p >Current Streak</p>
             </ion-label> 
           </div>
@@ -24,7 +24,7 @@
           <div >
             <ion-icon slot="start"  name="sad-outline"></ion-icon>
             <ion-label>
-              <h2>10 May 2021</h2>
+              <h2>{{parseDate(habit.FinalTracking?.Date)|date:"MMM dd yyyy"}}</h2>
               <p>Previous failure</p>
             </ion-label> 
           </div>
@@ -150,7 +150,7 @@
 <!-- List Headers in Lists -->
 <ion-list>
   <ion-list-header lines="none">
-    <ion-label><h1>Streak</h1></ion-label>
+    <ion-label><h1>Longest Streaks</h1></ion-label>
   </ion-list-header>
   <ion-item lines="none">
     <ion-segment scrollable class="streak-segment">

@@ -25,7 +25,9 @@ export class DetailsPage implements OnInit {
   isLoading:boolean = true;
   gaugeChart;
   streaks;
+  parseDate;
   constructor(private route: ActivatedRoute, private router: Router, private jsonProvider: JsonProvider, private popoverController:PopoverController) {
+    this.parseDate = parseDate;
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.habit= this.router.getCurrentNavigation().extras.state.habit;
@@ -40,6 +42,13 @@ export class DetailsPage implements OnInit {
         // this.getCalendarData();
       }
       this.getStreak();
+      document.onreadystatechange = () => {
+        if (document.readyState === 'complete') {
+          console.log("My width is:", (document.getElementById('gaugeChartContainer') as HTMLFormElement).clientWidth);
+          this.getGaugeChartData();
+          this.getCalendarData();
+        }
+      };
     });
     
   }
@@ -48,16 +57,27 @@ export class DetailsPage implements OnInit {
   
 
   ngOnInit() {  
+    if (!Highcharts.theme) {
+      Highcharts.setOptions({
+          chart: {
+              backgroundColor: 'black'
+          },
+          colors: ['#fff','#F62366', '#9DFF02', '#0CCDD6'],
+          // title: {
+          //     style: {
+          //         color: 'silver'
+          //     }
+          // },
+          // tooltip: {
+          //     style: {
+          //         color: 'silver'
+          //     }
+          // }
+      });
+  }
   }
 
   ionViewDidEnter(){
-    document.onreadystatechange = () => {
-      if (document.readyState === 'complete') {
-        console.log("My width is:", (document.getElementById('gaugeChartContainer') as HTMLFormElement).clientWidth);
-        this.getGaugeChartData();
-        this.getCalendarData();
-      }
-    };
   }
   
   getGaugeChartData(){
@@ -70,7 +90,8 @@ export class DetailsPage implements OnInit {
         'type': 'solidgauge',
         'name': habit.Name,
         'data': [{
-            'color': Highcharts.getOptions().colors[0],
+            'color': '#fff',
+            // 'className':'blue-band',
             //'radius': radius+'%',
             'innerRadius': '70%',
             'outerRadius': '100%',
@@ -116,7 +137,7 @@ export class DetailsPage implements OnInit {
         
             tooltip: {
                 borderWidth: 0,
-                backgroundColor: 'none',
+                backgroundColor: 'transparent',
                 shadow: false,
                 // style: {
                 //     fontSize: '12px'
@@ -132,15 +153,29 @@ export class DetailsPage implements OnInit {
             },
             pane: {
                 startAngle: 0,
-                endAngle: 360
+                endAngle: 360,
+                background: [{ // Track for Move
+                  outerRadius: '100%',
+                  innerRadius: '70%',
+                  backgroundColor: Highcharts.color(Highcharts.getOptions().colors[0])
+                          .setOpacity(0.1)
+                          .get(),
+                      borderWidth: 0
+                  
+                }]
             },
         
             yAxis: {
                 min: 0,
                 max: 100,
                 lineWidth: 0,
-                tickPositions: []
-            },
+                tickPositions: [],
+                // plotBands: [{
+                //     from: 0,
+                //     to: 100,
+                //     className: 'blue-band'
+                // }]
+              },
         
             plotOptions: {
                 solidgauge: {
