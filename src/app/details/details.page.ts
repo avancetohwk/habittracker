@@ -5,10 +5,13 @@ import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more.src';
 import HighchartsSolidGauge from 'highcharts/modules/solid-gauge';
 import { CalendarComponent } from 'ionic2-calendar';
-import { isToday, parseDate } from '../common/util';
+import { deepCopy, getStreak, getTrackingIdxByDate, isDateBeforeToday, isToday, parseDate, ToastService } from '../common/util';
 import { JsonProvider } from 'src/providers/json/json';
 import { PopoverController } from '@ionic/angular';
 import * as moment from 'moment';
+import { HabitTrackingProvider } from 'src/providers/habitTracker/habitTracker';
+import { HabitProvider } from 'src/providers/habits/habits';
+import { parse } from 'path';
 
 
 
@@ -22,30 +25,26 @@ HighchartsSolidGauge(Highcharts);
 export class DetailsPage implements OnInit {
   
   private habit: IHabit;
-  isLoading:boolean = true;
+  isLoading:boolean = false;
   gaugeChart;
   bubbleChart;
   streaks;
   parseDate;
-  constructor(private route: ActivatedRoute, private router: Router, private jsonProvider: JsonProvider, private popoverController:PopoverController) {
+  constructor(private route: ActivatedRoute, private router: Router, private popoverController:PopoverController, private toastService: ToastService,
+    private habitTrackingProvider: HabitTrackingProvider, private habitProvider: HabitProvider,private jsonProvider: JsonProvider) {
     this.parseDate = parseDate;
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         console.log('router')
         this.habit= this.router.getCurrentNavigation().extras.state.habit;
-        console.log(this.habit)
-        // this.getGaugeChartData();
-        // this.getCalendarData();
       }else{
         //this.router.navigateByUrl('/tabs');
         console.log('hardcode')
         //get from JSON during dev
         this.habit = this.jsonProvider.GetHabitWithTrackingsByHabitId("1");
-        // this.getGaugeChartData();
-        // this.getCalendarData();
       }
       
-      this.getStreak();
+      
       
     });
     
@@ -76,8 +75,12 @@ export class DetailsPage implements OnInit {
   init(){
     console.log("My bubble width is:", (document.getElementById('bubbleChartContainer') as HTMLFormElement).clientWidth);
     console.log("My width is:", (document.getElementById('gaugeChartContainer') as HTMLFormElement).clientWidth);
+    this.getStreak();
     this.getGaugeChartData();
     this.getCalendarData();
+    this.habit.FinalTracking = this.habit.Trackings[(<any>this.habit.Trackings).length -1];
+    this.habit.CurrStreak = getStreak(parseDate(this.habit.FinalTracking.Date), new Date() );
+
   }
 
   ionViewDidEnter(){
@@ -102,6 +105,22 @@ export class DetailsPage implements OnInit {
     }
  }
 
+  getHabitTrackings(){
+    this.isLoading = true;
+    this.habitTrackingProvider.GetHabitTrackingsByHabitId(this.habit.Id).subscribe((data : any) => {
+        console.table(data)
+        if (data){
+          this.habit.Trackings = data;
+          this.init();
+        }
+        this.isLoading = false;
+      },
+      (error) => {
+        this.isLoading = false;
+        console.error(error.Message)
+        
+      })
+  }
   
   getGaugeChartData(){
     var habit = this.habit;
@@ -336,7 +355,6 @@ export class DetailsPage implements OnInit {
 
   getCalendarData() {
       var events = [];
-      console.log(this.habit);
       var trackings = this.habit.Trackings;
       trackings.forEach((el)=>{
 
@@ -353,46 +371,151 @@ export class DetailsPage implements OnInit {
             });
         }
       })
+      console.log(events)
       this.eventSource = events;
     }
 
-  addFrequency(selectedDate){
-    //   selectedDate.events.push({
-    //     title: this.habit.Name,
-    //     startTime: new Date,
-    //     endTime: new Date,
-    //     allDay: false,
-    // });
-    // console.log(selectedDate);
-
+  addFrequency(){
     this.selectedDateEventsCount++;
   }
 
-  removeFrequency(selectedDate){
+  removeFrequency(){
     if(this.selectedDateEventsCount>0){
         this.selectedDateEventsCount--;
     }
   }
 
-  resetFrequency(selectedDate){
-      this.selectedDateEventsCount = selectedDate.events.length;
+  resetFrequency(calendarSelection){
+      this.selectedDateEventsCount = calendarSelection.events.length;
   }
 
-  saveFrequency(selectedDate){
-      //check if more or less.. get difference and add to firebase
+  saveFrequency(calendarSelection){
       
+      var oriEventsCount:number = calendarSelection.events.length;
+      var selectedDate:Date = parseDate(calendarSelection.date);
+      if(oriEventsCount == this.selectedDateEventsCount) return;
+
+      this.isLoading = true;
+      var tracking = null;
+      //return tracking idx instead of tracking obj cause we might need to get the tracking before & after curr tracking.
+      //result index == index of tracking that is right after current selected date
+      var result = getTrackingIdxByDate(this.habit.Trackings, selectedDate);
+      if(result.index > -1 && result.trackingFound) tracking = this.habit.Trackings[result.index];
+      if(this.selectedDateEventsCount == 0) this.deleteTracking(tracking);
+      else{
+        if(tracking == null){
+          //create new tracking
+          console.log('Creating new tracking')
+
+          var previousTracking = result.index < 1? null: this.habit.Trackings[result.index - 1];
+          var nextTracking = result.index < 0? null:this.habit.Trackings[result.index];
+          var newTracking = {
+              Id: null,
+              Date: selectedDate,
+              Frequency: this.selectedDateEventsCount,
+              HabitId:this.habit.Id,
+              Streak: previousTracking == null? 0: getStreak(parseDate(previousTracking.Date), selectedDate)
+              //Note: gotta update tracking for both before and after
+          };
+          
+          this.habitTrackingProvider.AddHabitTracking(newTracking).then(res => {
+            if(nextTracking){
+              console.log("Tracking updated successfully. Updating next tracking.")
+              this.updateNextTracking(nextTracking, selectedDate);
+            }else{
+              console.log("Tracking updated successfully. No update required for next tracking.")
+              this.toastService.presentToast("Update success. Retrieving updated trackings.")
+              this.getHabitTrackings();
+            }
+          },
+          (error) => {
+              // this.loadError = true;
+              this.isLoading = false;
+              console.error(error.message)
+              this.toastService.presentToast(error.message);
+              
+          });
+
+        }else{
+          //update frequency
+          tracking.Frequency = this.selectedDateEventsCount;
+          console.log('Updating tracking frequency.')
+          this.habitTrackingProvider.UpdateHabitTracking(tracking.Id, tracking).then(res =>{
+              this.toastService.presentToast("Tracking updated successfully. Retrieving updated trackings.")
+              this.getHabitTrackings();
+          }
+          ,(error) => {
+              // this.loadError = true;
+              this.isLoading = false;
+              console.error(error.message)
+              this.toastService.presentToast(error.message);
+              
+          });
+          this.isLoading = false;
+
+        }
+      }
   }
+
+  updateNextTracking(nextTracking, previousDate){
+    nextTracking.Streak = previousDate == null? 0: getStreak(previousDate, parseDate(nextTracking.Date));
+
+    this.habitTrackingProvider.UpdateHabitTracking(nextTracking.Id, nextTracking).then(res =>{
+      console.log("Next tracking updated successfully")
+      this.toastService.presentToast("Update success. Retrieving updated trackings.")
+      this.getHabitTrackings();
+    }
+    ,(error) => {
+        // this.loadError = true;
+        this.isLoading = false;
+        console.error(error.message)
+        this.toastService.presentToast(error.message);
+        
+    });
+  }
+
+  deleteTracking(tracking){
+    //TODO 
+    //result index == index of tracking for current selected date
+    var result = getTrackingIdxByDate(this.habit.Trackings, parseDate(tracking.Date));
+    if(result.index < 0) throw("Can't find tracking in tracking list.")
+    var previousTracking = result.index < 1? null: this.habit.Trackings[result.index - 1];
+    var nextTracking = result.index == this.habit.Trackings.length -1 ? null:this.habit.Trackings[result.index + 1];
+
+    this.habitTrackingProvider.DeleteHabitTracking(tracking).then(res=>{
+      if(nextTracking){
+        console.log("Tracking deleted successfully. Updating next tracking.")
+        this.updateNextTracking(nextTracking, parseDate(previousTracking?.Date));
+      }else{
+        console.log("Tracking deleted successfully. No update required for next tracking.")
+        this.toastService.presentToast("Delete success. Retrieving updated trackings.")
+        this.getHabitTrackings();
+      }
+    }
+    ,(error) => {
+        // this.loadError = true;
+        this.isLoading = false;
+        console.error(error.message)
+        this.toastService.presentToast(error.message);
+        
+    });
+  }
+
 
   //streak
   getStreak(){
-    this.streaks = this.habit.Trackings.sort((elemA, elemB) => {
+
+    //gotta use custom deep copy function cause json parse doesnt support dates
+    var trackings = deepCopy(this.habit.Trackings) 
+    
+    this.streaks = trackings.sort((elemA, elemB) => {
       if (elemA.Streak > elemB.Streak) {
         return -1;
       } else if (elemB.Streak > elemA.Streak) {
         return 1;
       }
       return 0;
-    }).slice(0, 5).map(s=>{
+    }).slice(0, 10).map(s=>{
       return {
         "Streak":s.Streak,
         "EndDate": moment(parseDate(s.Date)).format("MMM Do"),

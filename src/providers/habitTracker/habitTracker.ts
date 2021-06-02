@@ -26,6 +26,14 @@ export class HabitTrackingProvider {
     return this.db.collection(this.collection).doc(this.GenerateNewId(this.collection)).set(tracking).then(res => {});
   }
 
+  DeleteHabitTracking(tracking:IHabitTracker){
+    return this.db.collection(this.collection).doc(tracking.Id).delete().then(() => {
+      console.log("Document successfully deleted!");
+    }).catch((error) => {
+        console.error("Error removing document: ", error);
+    });
+  }
+
   GetHabitTrackings(){
     return this.db.collection(this.collection).snapshotChanges().pipe
       (map(actions => {
@@ -106,7 +114,7 @@ export class HabitTrackingProvider {
   //   ).subscribe();
   // }
 
-  UpdateHabitTrackingFrequency(habitId: string, tracking: IHabitTracker){
+  UpdateHabitTracking(habitId: string, tracking: IHabitTracker){
     return this.db
        .collection(this.collection)
        .doc(habitId)

@@ -11,9 +11,6 @@
   <ion-grid>
     
     <ion-row >
-      
-        
-      
       <ion-col size="7"> 
         <ion-card class="neon-border">
         <ion-row class="stat-item">
@@ -114,18 +111,6 @@
 
     <ng-template #monthviewEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
       <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
-          <!-- <ion-item *ngIf="selectedDate?.events.length>0"  (click)="eventSelected(event)">
-            <span *ngIf="!selectedDate?.events[0]?.allDay" class="monthview-eventdetail-timecolumn">{{selectedDate?.events[0]?.startTime|date: 'dd MMM yyyy'}} 
-            </span>
-            <ion-label  slot="end">
-              <h2 style="display: inline;vertical-align: top;">{{selectedDate?.events.length}}</h2>
-          </ion-label> 
-          <ion-icon slot="end" name="create-outline" (click)="presentPrompt()"></ion-icon>
-          <ion-icon slot="end" name="trash-outline"></ion-icon>
-        </ion-item>
-          <ion-item *ngIf="selectedDate?.events.length==0">
-              <div class="no-events-label">{{noEventsLabel}}</div>
-          </ion-item>-->
         <ion-item class="event-details-item"> 
           <figure>
             <header>
@@ -141,8 +126,21 @@
             <h1>{{selectedDateEventsCount}}</h1>
           </ion-label>
           <ion-icon class="stepper-btn" (click)="addFrequency(selectedDate)" name="add-circle-outline"></ion-icon>
-          <ion-icon class="frequency-icon" (click)=resetFrequency(selectedDate)  name="refresh-outline"></ion-icon>
-          <ion-icon class="frequency-icon" name="save-outline"></ion-icon>
+
+          <div>
+            <ion-button fill="clear" (click)=resetFrequency(selectedDate)>
+              <ion-icon class="frequency-icon"  name="refresh-outline"></ion-icon>
+            </ion-button>
+            <ion-ripple-effect></ion-ripple-effect> 
+          </div>
+          <div>
+            <ion-button fill="clear" *ngIf="!isLoading" (click)=saveFrequency(selectedDate)>
+              <ion-icon  class=" button" name="save-outline"></ion-icon>
+            </ion-button>
+            <ion-ripple-effect></ion-ripple-effect> 
+            <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+          </div>
+          
           
           <!-- <ion-button style="margin:0" fill="outline" (click)=resetFrequency(selectedDate) slot="end"><ion-icon  name="refresh-outline"></ion-icon></ion-button>
           <ion-button style="margin:0" fill="outline"  slot="end"><ion-icon  name="save-outline"></ion-icon></ion-button> -->

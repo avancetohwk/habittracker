@@ -388,7 +388,7 @@ export class Tab1Page {
             //latestDate is today, just update frequency
             var finalTracking = this.selectedPoint.finalTracking;
             finalTracking.Frequency++;
-            this.habitTrackingProvider.UpdateHabitTrackingFrequency(finalTracking.Id, finalTracking).then(res =>{
+            this.habitTrackingProvider.UpdateHabitTracking(finalTracking.Id, finalTracking).then(res =>{
                 this.presentToast('success');
                 this.getHabits();
             }

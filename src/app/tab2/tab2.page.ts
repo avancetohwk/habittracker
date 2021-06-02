@@ -3,7 +3,7 @@ import { HabitTrackingProvider } from 'src/providers/habitTracker/habitTracker';
 import { HabitProvider } from 'src/providers/habits/habits';
 import { ModalController, NavController, ToastController } from '@ionic/angular';
 import { IHabit, IHabitTracker } from 'src/interface/habit.interface';
-import { ToastService, isDateBeforeToday, getCurrentStreak } from '../common/util';
+import { ToastService, isDateBeforeToday, parseDate, getStreak } from '../common/util';
 import { Observable, forkJoin, zip } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
 @Component({
@@ -38,9 +38,9 @@ export class Tab2Page {
                 for(let idx in this.habits){
                     var habit = this.habits[idx];
                     observables.push(this.habitTrackingProvider.GetHabitTrackingsByHabitId(habit.Id))
-                    this.habitTrackingProvider.GetHabitTrackingsByHabitId(habit.Id).subscribe((data2: any) => {
-                        habit.Trackings = data2;
-                    })
+                    // this.habitTrackingProvider.GetHabitTrackingsByHabitId(habit.Id).subscribe((data2: any) => {
+                    //     habit.Trackings = data2;
+                    // })
                 }
                 zip(...observables)
                 .subscribe(trackings => {
@@ -48,7 +48,7 @@ export class Tab2Page {
                         var currTrackings = trackings[idx];
                         this.habits[idx].Trackings = currTrackings;
                         this.habits[idx].FinalTracking = currTrackings[(<any>currTrackings).length -1];
-                        this.habits[idx].CurrStreak = getCurrentStreak(this.habits[idx].FinalTracking);
+                        this.habits[idx].CurrStreak = getStreak(parseDate(this.habits[idx].FinalTracking.Date), new Date() );
                     }
                 });
             }catch(Exception){
@@ -74,7 +74,7 @@ export class Tab2Page {
         //latestDate is today, just update frequency
         var finalTracking = habit.FinalTracking;
         finalTracking.Frequency++;
-        this.habitTrackingProvider.UpdateHabitTrackingFrequency(finalTracking.Id, finalTracking).then(res =>{
+        this.habitTrackingProvider.UpdateHabitTracking(finalTracking.Id, finalTracking).then(res =>{
             this.toastService.presentToast("success")
             this.getHabits();
         }
