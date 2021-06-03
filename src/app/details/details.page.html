@@ -120,21 +120,27 @@
               {{selectedDate?.date| date: 'dd'}}
             </section>
           </figure>
-            
-          <ion-icon class="stepper-btn"  (click)="removeFrequency(selectedDate)" name="remove-circle-outline"></ion-icon>
+          
+          <ion-button class="stepper-btn" color="danger"  fill="clear" (click)="removeFrequency(selectedDate)" [disabled]="selectedDateEventsCount == 0">
+            <ion-icon  name="remove-circle-outline"></ion-icon>
+          </ion-button>
+          <!-- <ion-icon class="stepper-btn"  (click)="removeFrequency(selectedDate)" name="remove-circle-outline"></ion-icon> -->
           <ion-label>
             <h1>{{selectedDateEventsCount}}</h1>
           </ion-label>
-          <ion-icon class="stepper-btn" (click)="addFrequency(selectedDate)" name="add-circle-outline"></ion-icon>
+          <ion-button class="stepper-btn" color="success"  fill="clear" (click)="addFrequency(selectedDate)">
+            <ion-icon  name="add-circle-outline"></ion-icon>
+          </ion-button>
+          
 
           <div>
-            <ion-button fill="clear" (click)=resetFrequency(selectedDate)>
+            <ion-button fill="clear" (click)=resetFrequency(selectedDate) [disabled]="selectedDateEventsCount == selectedDate?.events.length">
               <ion-icon class="frequency-icon"  name="refresh-outline"></ion-icon>
             </ion-button>
             <ion-ripple-effect></ion-ripple-effect> 
           </div>
           <div>
-            <ion-button fill="clear" *ngIf="!isLoading" (click)=saveFrequency(selectedDate)>
+            <ion-button fill="clear" *ngIf="!isLoading" (click)=saveFrequency(selectedDate) [disabled]="selectedDateEventsCount == selectedDate?.events.length">
               <ion-icon  class=" button" name="save-outline"></ion-icon>
             </ion-button>
             <ion-ripple-effect></ion-ripple-effect> 
