@@ -74,7 +74,8 @@
       </ion-col>
    
       <ion-col size="8" class="ion-text-center">
-        <h2 class="calendar-title">{{ viewTitle }}</h2>
+        <ion-label><h1 class="calendar-title">{{ viewTitle }}</h1></ion-label>
+        
       </ion-col>
    
       <!-- Move forward one screen of the slides -->
@@ -111,7 +112,7 @@
 
     <ng-template #monthviewEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
       <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
-        <ion-item class="event-details-item"> 
+        <ion-item class="event-details-item" lines="none"> 
           <figure>
             <header>
               {{selectedDate?.date| date: 'MMM'}}
@@ -160,14 +161,14 @@
 <!-- List Headers in Lists -->
 <ion-list>
   <ion-list-header lines="none">
-    <ion-label><h1>Longest Streaks</h1></ion-label>
+      <ion-label><h1 class="ion-text-center">Longest Streaks</h1></ion-label>
   </ion-list-header>
   <ion-item lines="none">
     <ion-segment scrollable class="streak-segment">
       <div *ngFor="let s of streaks;index as idx">
         <div class="notify-badge" [ngClass]="{'gold':idx==0,'silver':idx==1,'bronze':idx==2}"></div>
         <ion-segment-button class="streak-segment-btn neon-border" value="home">
-          <h2>{{s.Streak}}</h2><p>{{s.StartDate}} - {{s.EndDate}}</p>
+          <h3>{{s.Streak}}</h3><p>{{s.StartDate}} - {{s.EndDate}}</p>
         </ion-segment-button>
       </div>
     </ion-segment>
@@ -176,7 +177,8 @@
 
 
 <!-- Average -->
-<div id="bubbleChartContainer"></div>
+<div id="columnChartContainer"></div>
+<!-- <div id="bubbleChartContainer"></div> -->
 
 
   

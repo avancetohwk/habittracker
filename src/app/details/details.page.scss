@@ -223,6 +223,11 @@ figure {
 .streak-segment-btn{
     color: var(--ion-color-primary);
     border-radius: 1em;
-    
     margin-right: 0.5em;
+    width: 10em;
+    height: 6em;
+
+    p{
+        font-size: 0.6em;
+    }
 }

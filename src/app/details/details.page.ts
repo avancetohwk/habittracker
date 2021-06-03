@@ -27,6 +27,7 @@ export class DetailsPage implements OnInit {
   isLoading:boolean = false;
   gaugeChart;
   bubbleChart;
+  columnChart;
   streaks;
   parseDate;
   constructor(private route: ActivatedRoute, private router: Router, private popoverController:PopoverController, private toastService: ToastService,
@@ -40,7 +41,7 @@ export class DetailsPage implements OnInit {
         //this.router.navigateByUrl('/tabs');
         console.log('hardcode')
         //get from JSON during dev
-        this.habit = this.jsonProvider.GetHabitWithTrackingsByHabitId("1");
+        this.habit = this.jsonProvider.GetHabitWithTrackingsByHabitId("1")
       }
       
       
@@ -55,7 +56,7 @@ export class DetailsPage implements OnInit {
   ngOnInit() {  
     Highcharts.setOptions({
       chart: {
-          //backgroundColor: 'black'
+          backgroundColor: 'transparent'
       },
       colors: ['#fff', '#07cdff','#F62366', '#9DFF02', '#0CCDD6'],
       // title: {
@@ -72,8 +73,8 @@ export class DetailsPage implements OnInit {
   }
 
   init(){
-    console.log("My bubble width is:", (document.getElementById('bubbleChartContainer') as HTMLFormElement).clientWidth);
-    console.log("My width is:", (document.getElementById('gaugeChartContainer') as HTMLFormElement).clientWidth);
+    // console.log("My bubble width is:", (document.getElementById('bubbleChartContainer') as HTMLFormElement).clientWidth);
+    // console.log("My width is:", (document.getElementById('gaugeChartContainer') as HTMLFormElement).clientWidth);
     this.getStreak();
     this.getGaugeChartData();
     this.getCalendarData();
@@ -131,7 +132,7 @@ export class DetailsPage implements OnInit {
         'type': 'solidgauge',
         'name': habit.Name,
         'data': [{
-            'color': Highcharts.getOptions().colors[1],
+            'color': Highcharts.getOptions().colors[0],
             // 'className':'blue-band',
             //'radius': radius+'%',
             'innerRadius': '70%',
@@ -146,22 +147,31 @@ export class DetailsPage implements OnInit {
 
     //bubbleSeries
     var currYear = new Date().getFullYear();
-    habit.Trackings.filter(t=>parseDate(t.Date).getFullYear() == currYear).forEach(t=>{
+    // habit.Trackings.filter(t=>parseDate(t.Date).getFullYear() == currYear).forEach(t=>{
 
-    })
+    // })
+    // var groups = habit.Trackings.filter(t=>parseDate(t.Date).getFullYear() == currYear).reduce((prev, cur)=> {
+    //   var date = parseDate(cur.Date);
+      
+    //   var year = moment(date).format("yyyy");
+    //   var month = moment(date).format("MMM");
+    //   var key = moment(date).format("MMM yyyy");
+    //   (prev[key]?prev[key] = [prev[key][0],prev[key][1]+=1, prev[key][2]+=cur.Frequency]:prev[key]= [date.getMonth()+1,1,cur.Frequency]);
+
+    //   //(prev[key]?prev[key].data.push(cur):prev[key]= {group: String(key), data: [cur],year: year});
+    //   return prev;
+    // }, {});
+
     var groups = habit.Trackings.filter(t=>parseDate(t.Date).getFullYear() == currYear).reduce((prev, cur)=> {
       var date = parseDate(cur.Date);
-      
-      var year = moment(date).format("yyyy");
-      var month = moment(date).format("MMM");
-      var key = moment(date).format("MMM yyyy");
-      (prev[key]?prev[key] = [prev[key][0],prev[key][1]+=1, prev[key][2]+=cur.Frequency]:prev[key]= [date.getMonth()+1,1,cur.Frequency]);
+      var key = moment(date).format("MMM");
+      (prev[key]?prev[key] = [prev[key][0], prev[key][1]+=cur.Frequency]:prev[key]= [key,cur.Frequency]);
 
       //(prev[key]?prev[key].data.push(cur):prev[key]= {group: String(key), data: [cur],year: year});
       return prev;
     }, {});
     var result = Object.keys(groups).map(function(k){ return groups[k]; });
-    
+    console.log(result);
     this.buildCharts(gaugeSeries, result);
   }
 
@@ -198,6 +208,7 @@ export class DetailsPage implements OnInit {
             tooltip: {
                 borderWidth: 0,
                 backgroundColor: 'transparent',
+                
                 shadow: false,
                 // style: {
                 //     fontSize: '12px'
@@ -217,7 +228,7 @@ export class DetailsPage implements OnInit {
                 background: [{ // Track for Move
                   outerRadius: '100%',
                   innerRadius: '70%',
-                  backgroundColor: Highcharts.color(Highcharts.getOptions().colors[1])
+                  backgroundColor: Highcharts.color(Highcharts.getOptions().colors[0])
                           .setOpacity(0.1)
                           .get(),
                       borderWidth: 0
@@ -250,65 +261,138 @@ export class DetailsPage implements OnInit {
             series: gaugeSeries
         });
 
-        this.bubbleChart = Highcharts.chart("bubbleChartContainer",{
-
+        this.columnChart = Highcharts.chart('columnChartContainer', {
           chart: {
-            type: 'bubble',
-            plotBorderWidth: 0,
-            zoomType: 'xy',
-            backgroundColor: 'transparent',
-            events: {
-              //render: renderIcons
-              load: function () {
-                var self = this;
-                // self.reflow ();
-                // self.tooltip.refresh(self.series[0].data[0]);
-                setTimeout (function () {
-                  self.reflow ();
-                }, 0)
-              }
-          }
-          },
-          legend:{
-            enabled:false,
+              type: 'column',
+              backgroundColor: 'transparent',
+              events: {
+                //render: renderIcons
+                load: function () {
+                  var self = this;
+                  // self.reflow ();
+                  // self.tooltip.refresh(self.series[0].data[0]);
+                  setTimeout (function () {
+                    self.reflow ();
+                  }, 0)
+                }
+            }
           },
           title: {
-            text: null
+              text: null
           },
-        
+          subtitle: {
+              text: null
+          },
           xAxis: {
             gridLineWidth: 0,
-            accessibility: {
-              rangeDescription: 'Range: 0 to 100.'
-            },
-            title:null
+              type: 'category',
+              labels: {
+                  rotation: -45,
+                  style: {
+                      fontSize: '13px',
+                      fontFamily: 'Verdana, sans-serif'
+                  }
+              }
           },
-        
           yAxis: {
-            gridLineWidth: 0,
-            title:null,
-            startOnTick: false,
-            endOnTick: false,
-            accessibility: {
-              rangeDescription: 'Range: 0 to 100.'
-            }
+            visible: false,
+              gridLineWidth: 0,
+              min: 0,
+              title: {
+                  text: null
+              }
+          },
+          legend: {
+              enabled: false
+          },
+          tooltip: {
+              pointFormat: 'Population in 2017: <b>{point.y:.1f} millions</b>'
           },
           series: [{
-            type:"bubble",
-            data: bubbleSeries,
-            marker: {
-              fillColor: {
+              type:'column',
+              name: 'Population',
+              color: {
                 radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
                 stops: [
-                  [0, 'rgba(255,255,255,0.5)'],
-                  [1, Highcharts.color(Highcharts.getOptions().colors[1]).setOpacity(0.5).get('rgba').toString()]
+                  [0, '#fff'],
+                  [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0.2).get('rgba').toString()]
                 ]
+              },
+              data: bubbleSeries,
+              dataLabels: {
+                  enabled: true,
+                  rotation: -90,
+                  
+                  align: 'right',
+                  format: '{point.y}', // one decimal
+                  y: 10, // 10 pixels down from the top
+                  style: {
+                      fontSize: '13px',
+                      fontFamily: 'Verdana, sans-serif'
+                  }
               }
-            }
           }]
+        });
+
+        // this.bubbleChart = Highcharts.chart("bubbleChartContainer",{
+
+        //   chart: {
+        //     type: 'bubble',
+        //     plotBorderWidth: 0,
+        //     zoomType: 'xy',
+        //     backgroundColor: 'transparent',
+        //     events: {
+        //       //render: renderIcons
+        //       load: function () {
+        //         var self = this;
+        //         // self.reflow ();
+        //         // self.tooltip.refresh(self.series[0].data[0]);
+        //         setTimeout (function () {
+        //           self.reflow ();
+        //         }, 0)
+        //       }
+        //   }
+        //   },
+        //   legend:{
+        //     enabled:false,
+        //   },
+        //   title: {
+        //     text: null
+        //   },
+        
+        //   xAxis: {
+        //     gridLineWidth: 0,
+        //     accessibility: {
+        //       rangeDescription: 'Range: 0 to 100.'
+        //     },
+        //     title:null
+        //   },
+        
+        //   yAxis: {
+        //     gridLineWidth: 0,
+        //     title:null,
+        //     startOnTick: false,
+        //     endOnTick: false,
+        //     accessibility: {
+        //       rangeDescription: 'Range: 0 to 100.'
+        //     }
+        //   },
+        //   series: [{
+        //     type:"bubble",
+        //     data: bubbleSeries,
+        //     marker: {
+        //       fillColor: {
+        //         radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
+        //         stops: [
+        //           [0, 'rgba(255,255,255,0.5)'],
+        //           [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0.5).get('rgba').toString()]
+        //         ]
+        //       }
+        //     }
+        //   }]
           
         
-        });
+        // });
 
         resolve();
         
@@ -515,6 +599,7 @@ export class DetailsPage implements OnInit {
       }
       return 0;
     }).slice(0, 10).map(s=>{
+      console.log(s)
       return {
         "Streak":s.Streak,
         "EndDate": moment(parseDate(s.Date)).format("MMM Do"),

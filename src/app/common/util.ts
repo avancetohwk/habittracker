@@ -34,8 +34,15 @@ export const getStreak = (startDate, endDate):number =>{
 }
 
 export const parseDate=(input)=>{
-  if(input == null) return null;
-  return (input instanceof Date)? input:(<any>input).toDate()
+  var result = null;
+  if(input == null) throw("Input is null");
+  try{
+    result = (input instanceof Date)? input:(<any>input).toDate();
+  }catch(e){
+    console.log((e as Error));
+    console.log(input)
+  }
+  return result;
 }
 
 export const isToday = (someDate) => {
