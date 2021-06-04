@@ -46,6 +46,7 @@ export class DetailsPage implements OnInit {
           this.habit = res;
           this.init();
         })
+        //this.jsonProvider.GetHabitWithTrackingsByHabitId("1")
       }
       
       

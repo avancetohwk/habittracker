@@ -12,29 +12,87 @@
       <ion-title size="large">Tab 2</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-list>
-    <ion-item-sliding *ngFor="let habit of habits"  >
-      <ion-item (click)="goToDetailsPage(habit)"> 
-        <ion-label >{{habit?.Name}}</ion-label>
-        <!-- <ion-note color="dark" slot="end">{{habit?.CurrStreak}}</ion-note> -->
-        <ion-badge slot="end">{{habit?.CurrStreak}}</ion-badge>
-      </ion-item>
-      <ion-item-options side="end">
-        <ion-item-option >
-          <ion-icon *ngIf="!isAddingTracking" (click)="addTracking(habit)" name="sad-outline"></ion-icon>
+  <ion-list style="background-color: transparent;">
+    <ion-card *ngFor="let habit of habits" class="neon-border" style="border: 1px solid white" >
+      <ion-card-header (click)="goToDetailsPage(habit)">
+        <ion-card-title>{{habit?.Name}}</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content>
+       
+        <ion-grid>
+          <ion-row>
+            <ion-col col-6 style="padding: 0;">
+              <ion-row>
+                <div>
+                  <ion-icon style="font-size:2.5em;margin-right:0.3em" col-4 slot="start"  name="flame-outline"></ion-icon>
+                </div>
+                <div >
+                  <ion-label col-8>
+                    <h2 style="font-size: 1em;">{{habit?.CurrStreak}}</h2>
+                    <p style="font-size: 0.8em;">Current Streak</p>
+                  </ion-label> 
+                </div>
+              </ion-row>
+              <!-- <div style="display: flex;">
+                
+                
+              </div> -->
+              
+            </ion-col>
+            <ion-col col-6 style="padding: 0;">
+              <ion-row>
+                <div>
+                  <ion-icon style="font-size:2.5em;margin-right:0.3em" col-4 slot="start"  name="sad-outline"></ion-icon>
+                </div>
+                <div >
+                  <ion-label col-8>
+                    <h2 style="font-size: 1em;">{{habit==null?"-": parseDate(habit?.FinalTracking?.Date)|date:"MMM dd yyyy"}}</h2>
+                    <!-- <h2 style="font-size: 1em;">{{habit==null?"-": parseDate(habit?.FinalTracking?.Date)|date:"MMM dd yyyy"}}</h2> -->
+                    <p style="font-size: 0.8em;">Previous failure</p>
+                  </ion-label> 
+                </div>
+              </ion-row>
+              
+            </ion-col>
+          </ion-row>
+          <ion-row style="position: relative;margin-top:0.5em">
+            <ion-col size="10" style="margin-top: 1em;">
+              <ion-progress-bar  class="top-bar" style="height: 0.75em; position: absolute;z-index: 2; border-radius: 0.2em;"   value={{habit.Completed}} buffer={{habit.Completed}}></ion-progress-bar>
+            </ion-col>
+            <!-- <ion-col size="2" >
+              <ion-button fill="clear" style="height: auto;"><ion-icon style="font-size: 2em;"  name="refresh" ></ion-icon></ion-button>
+              
+            </ion-col> -->
+              
+            
+        
+            <!-- <ion-progress-bar type="indeterminate" style="height: 0.75em;"></ion-progress-bar> -->
+          </ion-row>
+        </ion-grid>
+      <!-- <ion-item lines="none" style="position: relative;">
+        <ion-progress-bar class="top-bar" style="height: 0.75em; position: absolute;z-index: 2;"  value="0.5"></ion-progress-bar>
+        
+        <ion-progress-bar type="indeterminate"></ion-progress-bar>
+      </ion-item> -->
+      <ion-fab-button  style="position: absolute;bottom:-0.5em;right: -0.5em;z-index: 1;">
+        <ion-icon style="font-size: 2em;color: black;"  name="refresh" *ngIf="!isAddingTracking" (click)="addTracking(habit)"></ion-icon>
           <ion-ripple-effect></ion-ripple-effect>
           <ion-spinner *ngIf="isAddingTracking" name="crescent"></ion-spinner>
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-    <ion-item *ngFor="let habit of habits" (click)="test(habit)">
-      
-      <ion-label>{{habit?.Name}}</ion-label>
-      
-      
-      <ion-icon slot="end" name="sad-outline" (click)="addTracking('da')"></ion-icon>
-      
-    </ion-item>
+        
+      </ion-fab-button>
+        <!-- <ion-button fill="outline" style="height: auto;position: absolute;bottom: 0;right: 0;"><ion-icon style="font-size: 2em;"  name="refresh" ></ion-icon></ion-button> -->
+      </ion-card-content>
+    </ion-card>
+      <div style="display: flex;justify-content: center;margin-top:1em">
+        <ion-fab-button size="small"  >
+          <ion-icon style="font-size: 2em;color: black;"  name="add"></ion-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+            <ion-spinner *ngIf="isAddingTracking" name="crescent"></ion-spinner>
+          
+        </ion-fab-button>
+      </div>
+    
   </ion-list>
   <!-- <app-explore-container name="Tab 2 page"></app-explore-container> -->
 </ion-content>

@@ -26,7 +26,7 @@
           <div >
             <ion-icon slot="start"  name="sad-outline"></ion-icon>
             <ion-label>
-              <h2>{{parseDate(habit?.FinalTracking?.Date)|date:"MMM dd yyyy"}}</h2>
+              <h2>{{habit==null?"-": parseDate(habit?.FinalTracking?.Date)|date:"MMM dd yyyy"}}</h2>
               <p>Previous failure</p>
             </ion-label> 
           </div>

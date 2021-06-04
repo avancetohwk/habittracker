@@ -18,11 +18,6 @@ ion-card{
     padding:0.5em;
 }
 
-.neon-border{
-    border: currentColor 0.15em solid;
-    box-shadow: inset 0 0 0.75em 0 currentColor, 0 0 0.75em 0 currentColor;
-}
-
 #gaugeChartContainer{
     position: relative;
     border-radius:30%;

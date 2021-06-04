@@ -18,12 +18,13 @@ export class Tab2Page {
   isApp: boolean = false;
   habits: IHabit;//AngularFirestoreCollection<IHabit>;
   habitTrackings: IHabitTracker;//AngularFirestoreCollection<IHabitTracker>;
-  
+  parseDate;
 
   constructor(private modalCtrl: ModalController,private toastCtrl: ToastController,
              private habitProvider: HabitProvider, private habitTrackingProvider: HabitTrackingProvider,
              private toastService: ToastService, private router:Router) {
       //this.getHabitTrackings();
+      this.parseDate = parseDate;
       this.getHabits();
 
   }
@@ -49,6 +50,7 @@ export class Tab2Page {
                         this.habits[idx].Trackings = currTrackings;
                         this.habits[idx].FinalTracking = currTrackings[(<any>currTrackings).length -1];
                         this.habits[idx].CurrStreak = getStreak(parseDate(this.habits[idx].FinalTracking.Date), new Date() );
+                        this.habits[idx].Completed = this.habits[idx].CurrStreak/this.habits[idx].TargetDays;
                     }
                 });
             }catch(Exception){
