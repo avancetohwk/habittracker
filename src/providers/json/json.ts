@@ -5,8 +5,8 @@ import { IHabit } from 'src/interface/habit.interface';
 @Injectable()
 export class JsonProvider {
 
-    GetHabitWithTrackingsByHabitId(id:string){
-        return <any>HabitsWithTrackings.filter(h=>{
+    GetHabitWithTrackingsByHabitId = async(id:string):Promise<any>=>{
+        return  await <any>HabitsWithTrackings.filter(h=>{
             return h.Id == id;
         })[0] as IHabit
     }

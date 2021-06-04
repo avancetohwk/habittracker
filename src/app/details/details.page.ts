@@ -37,11 +37,15 @@ export class DetailsPage implements OnInit {
       if (this.router.getCurrentNavigation().extras.state) {
         console.log('router')
         this.habit= this.router.getCurrentNavigation().extras.state.habit;
+        this.init();
       }else{
         //this.router.navigateByUrl('/tabs');
         console.log('hardcode')
         //get from JSON during dev
-        this.habit = this.jsonProvider.GetHabitWithTrackingsByHabitId("1")
+        this.jsonProvider.GetHabitWithTrackingsByHabitId("1").then(res=>{
+          this.habit = res;
+          this.init();
+        })
       }
       
       
@@ -89,20 +93,20 @@ export class DetailsPage implements OnInit {
 
   ngAfterViewInit() {
     console.log(this.ngAfterViewInit)
-    if(document.readyState === "complete"){
-      console.log("document ready")
-      this.init()
-    }else{
-      console.log("document Not ready, waiting on state change.")
-      document.onreadystatechange = () => {
-        console.log('state changed - ' + document.readyState);
-        if (document.readyState === 'complete') {
+    // if(document.readyState === "complete"){
+    //   console.log("document ready")
+    //   this.init()
+    // }else{
+    //   console.log("document Not ready, waiting on state change.")
+    //   document.onreadystatechange = () => {
+    //     console.log('state changed - ' + document.readyState);
+    //     if (document.readyState === 'complete') {
           
-          this.init()
+    //       this.init()
           
-        }
-      };
-    }
+    //     }
+    //   };
+    // }
  }
 
   getHabitTrackings(){
