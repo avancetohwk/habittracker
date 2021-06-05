@@ -30,6 +30,7 @@ export class DetailsPage implements OnInit {
   columnChart;
   streaks;
   parseDate;
+  selectedYear = "2021";
   constructor(private route: ActivatedRoute, private router: Router, private popoverController:PopoverController, private toastService: ToastService,
     private habitTrackingProvider: HabitTrackingProvider, private habitProvider: HabitProvider,private jsonProvider: JsonProvider) {
     this.parseDate = parseDate;
@@ -61,9 +62,10 @@ export class DetailsPage implements OnInit {
   ngOnInit() {  
     Highcharts.setOptions({
       chart: {
-          backgroundColor: 'transparent'
+          backgroundColor: 'transparent',
+          height: '80%',
       },
-      colors: ['#fff', '#07cdff','#F62366', '#9DFF02', '#0CCDD6'],
+      colors: ['#fff', '#000','#07cdff','#F62366', '#9DFF02', '#0CCDD6'],
       // title: {
       //     style: {
       //         color: 'silver'
@@ -187,7 +189,7 @@ export class DetailsPage implements OnInit {
         this.gaugeChart = Highcharts.chart('gaugeChartContainer', { 
 
             chart: {
-                height: '90%',
+                
                 plotBackgroundColor: 'transparent',
                 backgroundColor:'transparent',
                 events: {
@@ -282,6 +284,9 @@ export class DetailsPage implements OnInit {
                 }
             }
           },
+          credits: {
+            enabled: false
+        },
           title: {
               text: null
           },
@@ -294,6 +299,7 @@ export class DetailsPage implements OnInit {
               labels: {
                   rotation: -45,
                   style: {
+                      color:'black',
                       fontSize: '13px',
                       fontFamily: 'Verdana, sans-serif'
                   }
@@ -320,7 +326,7 @@ export class DetailsPage implements OnInit {
                 radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
                 stops: [
                   [0, '#fff'],
-                  [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0.2).get('rgba').toString()]
+                  [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0.3).get('rgba').toString()]
                 ]
               },
               data: bubbleSeries,

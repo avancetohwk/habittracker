@@ -18,31 +18,31 @@ export const Habits = [{
 
 export const HabitTrackings = [{
     "Id":"sad",
-    "Date": new Date("2021-05-16T00:00:00"),
+    "Date": new Date("2021-02-16T00:00:00"),
     "Frequency":1,
     "HabitId":"1",
     "Streak":12
 },{
     "Id":"sad",
-    "Date": new Date("2021-05-17T00:00:00"),
+    "Date": new Date("2021-03-17T00:00:00"),
     "Frequency":2,
     "HabitId":"1",
     "Streak":0
 },{
     "Id":"sad",
-    "Date": new Date("2021-05-19T00:00:00"),
+    "Date": new Date("2021-04-19T00:00:00"),
     "Frequency":1,
     "HabitId":"1",
     "Streak":2
 },{
     "Id":"sad",
-    "Date": new Date("2021-05-22T00:00:00"),
+    "Date": new Date("2021-04-22T00:00:00"),
     "Frequency":5,
     "HabitId":"1",
     "Streak":3
 },{
     "Id":"sad",
-    "Date": new Date("2021-05-27T00:00:00"),
+    "Date": new Date("2021-04-27T00:00:00"),
     "Frequency":1,
     "HabitId":"1",
     "Streak":5
@@ -60,7 +60,7 @@ export const HabitTrackings = [{
     "Streak":1
 },{
     "Id":"sad",
-    "Date": new Date("2021-05-15T00:00:00"),
+    "Date": new Date("2021-06-15T00:00:00"),
     "Frequency":1,
     "HabitId":"2",
     "Streak":14
@@ -72,37 +72,37 @@ export const HabitTrackings = [{
     "Streak":3
 },{
     "Id":"sad",
-    "Date": new Date("2021-05-22T00:00:00"),
+    "Date": new Date("2021-06-22T00:00:00"),
     "Frequency":1,
     "HabitId":"2",
     "Streak":4
 },{
     "Id":"sad",
-    "Date": new Date("2021-05-28T00:00:00"),
+    "Date": new Date("2021-08-28T00:00:00"),
     "Frequency":1,
     "HabitId":"2",
     "Streak":6
 },{
     "Id":"sad",
-    "Date": new Date("2021-05-12T00:00:00"),
+    "Date": new Date("2021-08-12T00:00:00"),
     "Frequency":1,
     "HabitId":"3",
     "Streak":22
 },{
     "Id":"sad",
-    "Date": new Date("2021-05-18T00:00:00"),
+    "Date": new Date("2021-08-18T00:00:00"),
     "Frequency":2,
     "HabitId":"3",
     "Streak":6
 },{
     "Id":"sad",
-    "Date": new Date("2021-05-22T00:00:00"),
+    "Date": new Date("2021-12-22T00:00:00"),
     "Frequency":1,
     "HabitId":"3",
     "Streak":4
 },{
     "Id":"sad",
-    "Date": new Date("2021-05-29T00:00:00"),
+    "Date": new Date("2021-12-29T00:00:00"),
     "Frequency":1,
     "HabitId":"3",
     "Streak":7

@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
+  <!-- <ion-grid>
     
     <ion-row >
       <ion-col size="7"> 
@@ -39,7 +39,250 @@
     
     </ion-row>
   
-  </ion-grid>
+  </ion-grid> -->
+  <div class="container">
+    <section class="scrollsnap-section">
+      <div class="charts-background">
+      </div>
+        <ion-item lines="none">
+          <ion-label>Monthly Frequency</ion-label>
+          <ion-select interface="popover" [value]="selectedYear">
+            <ion-select-option  value="2021">2021</ion-select-option>
+            <ion-select-option value="2020">2020</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-slides>
+          <ion-slide>
+            <div id="columnChartContainer"></div>
+          </ion-slide>
+          <ion-slide>
+            <div id="gaugeChartContainer"></div>
+          </ion-slide>
+        </ion-slides>
+      
+      
+      <ion-card class="stats-card" style="border-radius:1em;">
+        <ion-item lines="none" class="stats-item" >
+          <ion-label >
+            <!-- <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon> -->
+            <h2>0</h2>
+            <p>Current Streak</p>
+          </ion-label>
+          <ion-icon name="flame-outline"></ion-icon>
+      </ion-item>
+      <ion-item lines="none" class="stats-item"  >
+        <ion-label >
+          <!-- <ion-icon style="font-size: 1.5em;" name="sad-outline"></ion-icon> -->
+          <h2>Jun 06</h2>
+          <p>Previous Failure</p>
+        </ion-label>
+        <ion-icon name="sad-outline"></ion-icon>
+      </ion-item>
+      <ion-item lines="none" class="stats-item"  >
+        <ion-label >
+          <!-- <ion-icon style="font-size: 1.5em;" name="podium-outline"></ion-icon> -->
+          <h2>1.2</h2>
+          <p>Daily Average</p>
+        </ion-label>
+        <ion-icon name="podium-outline"></ion-icon>
+      </ion-item>
+      <ion-item lines="none" class="stats-item" >
+        <ion-label >
+          <!-- <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon> -->
+          <h2>0</h2>
+          <p>Current Streak</p>
+        </ion-label>
+        <ion-icon name="flame"></ion-icon>
+    </ion-item>
+      </ion-card>
+      
+     
+        <!-- <div style="display: flex;justify-content: space-around; margin-top: 1em;">
+          <ion-item lines="none" class="circle" >
+              <ion-label style="text-align: center;">
+                <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon>
+                <p>0</p>
+              </ion-label>
+          </ion-item>
+          <ion-item lines="none" class="circle" >
+            <ion-label style="text-align: center;">
+              <ion-icon style="font-size: 1.5em;" name="sad-outline"></ion-icon>
+              <p>Jun 06</p>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="none" class="circle" >
+            <ion-label style="text-align: center;">
+              <ion-icon style="font-size: 1.5em;" name="podium-outline"></ion-icon>
+              <p>1.2</p>
+            </ion-label>
+          </ion-item>
+          
+        </div>
+        <div style="display: flex;justify-content: space-around; margin-top: 1em;">
+          <ion-item lines="none" class="circle" >
+              <ion-label style="text-align: center;">
+                <ion-icon style="font-size: 1.5em;" name="flame"></ion-icon>
+                <p>0</p>
+              </ion-label>
+          </ion-item>
+          <ion-item lines="none" class="circle" >
+            <ion-label style="text-align: center;">
+              <ion-icon style="font-size: 1.5em;" name="sad"></ion-icon>
+              <p>Jun 06</p>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="none" class="circle" >
+            <ion-label style="text-align: center;">
+              <ion-icon style="font-size: 1.5em;" name="podium"></ion-icon>
+              <p>1.2</p>
+            </ion-label>
+          </ion-item>
+          
+        </div> -->
+      <!-- <ion-item style="margin-top: 1em;">
+        
+        <ion-segment scrollable>
+          <div style="display: flex;justify-content: space-evenly;">
+            <ion-chip>
+              <ion-icon name="flame"></ion-icon>
+              <ion-label>0</ion-label>
+            </ion-chip>
+            <ion-chip>
+              <ion-icon name="sync"></ion-icon>
+              <ion-label>2</ion-label>
+            </ion-chip>
+            <ion-chip>
+              <ion-icon name="sad"></ion-icon>
+              <ion-label>Jun 5 2021</ion-label>
+            </ion-chip>
+            <ion-chip>
+              <ion-icon name="podium"></ion-icon>
+              <ion-label>1.2</ion-label>
+            </ion-chip>
+            
+            <ion-chip>
+              <ion-icon name="flag"></ion-icon>
+              <ion-label>30</ion-label>
+            </ion-chip>
+          </div>
+        </ion-segment>
+      </ion-item> -->
+    </section>
+    <section class="scrollsnap-section">
+      <ion-row>
+        <!-- Move back one screen of the slides -->
+        <ion-col size="2">
+          <ion-button fill="clear" (click)="back()">
+            <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+     
+        <ion-col size="8" class="ion-text-center">
+          <ion-label><h1 class="calendar-title">{{ viewTitle }}</h1></ion-label>
+          
+        </ion-col>
+     
+        <!-- Move forward one screen of the slides -->
+        <ion-col size="2">
+          <ion-button fill="clear" (click)="next()">
+            <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+     
+      <calendar 
+        [eventSource]="eventSource"
+        [calendarMode]="calendar.mode"
+        [currentDate]="calendar.currentDate"
+        (onEventSelected)="onEventSelected($event)"
+        (onTitleChanged)="onViewTitleChanged($event)"
+        startHour="6"
+        endHour="20"
+        step="30"
+        startingDayWeek="1"
+        [monthviewDisplayEventTemplate]="monthviewDisplayEventTemplate"
+        [monthviewEventDetailTemplate]="monthviewEventDetailTemplate"
+      >
+      </calendar>
+     
+      <ng-template #monthviewDisplayEventTemplate let-view="view" let-row="row" let-col="col">
+        <div [class.with-event]="view.dates[row*7+col].events.length" (click)="onCurrentDateChanged(view.dates[row*7+col].events.length)">
+          {{view.dates[row*7+col].label}}
+          <div class="indicator-container">
+            <div class="event-indicator" *ngFor="let e of view.dates[row*7+col].events"></div>
+          </div>
+        </div>
+      </ng-template>
+  
+      <ng-template #monthviewEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+        <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
+          <ion-item class="event-details-item" lines="none"> 
+            <figure>
+              <header>
+                {{selectedDate?.date| date: 'MMM'}}
+              </header>
+              <section>
+                {{selectedDate?.date| date: 'dd'}}
+              </section>
+            </figure>
+            
+            <ion-button class="stepper-btn" color="danger"  fill="clear" (click)="removeFrequency(selectedDate)" [disabled]="selectedDateEventsCount == 0">
+              <ion-icon  name="remove-circle-outline"></ion-icon>
+            </ion-button>
+            <!-- <ion-icon class="stepper-btn"  (click)="removeFrequency(selectedDate)" name="remove-circle-outline"></ion-icon> -->
+            <ion-label>
+              <h1>{{selectedDateEventsCount}}</h1>
+            </ion-label>
+            <ion-button class="stepper-btn" color="success"  fill="clear" (click)="addFrequency(selectedDate)">
+              <ion-icon  name="add-circle-outline"></ion-icon>
+            </ion-button>
+            
+  
+            <div>
+              <ion-button fill="clear" (click)=resetFrequency(selectedDate) [disabled]="selectedDateEventsCount == selectedDate?.events.length">
+                <ion-icon class="frequency-icon"  name="refresh-outline"></ion-icon>
+              </ion-button>
+              <ion-ripple-effect></ion-ripple-effect> 
+            </div>
+            <div>
+              <ion-button fill="clear" *ngIf="!isLoading" (click)=saveFrequency(selectedDate) [disabled]="selectedDateEventsCount == selectedDate?.events.length">
+                <ion-icon  class=" button" name="save-outline"></ion-icon>
+              </ion-button>
+              <ion-ripple-effect></ion-ripple-effect> 
+              <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+            </div>
+            
+            
+            <!-- <ion-button style="margin:0" fill="outline" (click)=resetFrequency(selectedDate) slot="end"><ion-icon  name="refresh-outline"></ion-icon></ion-button>
+            <ion-button style="margin:0" fill="outline"  slot="end"><ion-icon  name="save-outline"></ion-icon></ion-button> -->
+          </ion-item>
+        </ion-list>
+    </ng-template>
+  
+  
+  
+  
+  <!-- List Headers in Lists -->
+  <ion-list class="streaks-container">
+    <ion-list-header lines="none">
+        <ion-label><h1 class="ion-text-center">Longest Streaks</h1></ion-label>
+    </ion-list-header>
+    <ion-item lines="none">
+      <ion-segment scrollable class="streak-segment">
+        <div *ngFor="let s of streaks;index as idx">
+          <div class="notify-badge" [ngClass]="{'gold':idx==0,'silver':idx==1,'bronze':idx==2}"></div>
+          <ion-segment-button class="streak-segment-btn neon-border" value="home">
+            <h3>{{s.Streak}}</h3><p>{{s.StartDate}} - {{s.EndDate}}</p>
+          </ion-segment-button>
+        </div>
+      </ion-segment>
+    </ion-item>
+  </ion-list>
+  
+    </section>
+  </div>
+  
+  
     <!-- <ion-segment [(ngModel)]="calendar.mode">
       <ion-segment-button value="month">
         <ion-label>Month</ion-label>
@@ -65,119 +308,10 @@
       </ion-col>
     </ion-row> -->
    
-    <ion-row>
-      <!-- Move back one screen of the slides -->
-      <ion-col size="2">
-        <ion-button fill="clear" (click)="back()">
-          <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
-        </ion-button>
-      </ion-col>
    
-      <ion-col size="8" class="ion-text-center">
-        <ion-label><h1 class="calendar-title">{{ viewTitle }}</h1></ion-label>
-        
-      </ion-col>
-   
-      <!-- Move forward one screen of the slides -->
-      <ion-col size="2">
-        <ion-button fill="clear" (click)="next()">
-          <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
-        </ion-button>
-      </ion-col>
-    </ion-row>
-   
-    <calendar 
-      [eventSource]="eventSource"
-      [calendarMode]="calendar.mode"
-      [currentDate]="calendar.currentDate"
-      (onEventSelected)="onEventSelected($event)"
-      (onTitleChanged)="onViewTitleChanged($event)"
-      startHour="6"
-      endHour="20"
-      step="30"
-      startingDayWeek="1"
-      [monthviewDisplayEventTemplate]="monthviewDisplayEventTemplate"
-      [monthviewEventDetailTemplate]="monthviewEventDetailTemplate"
-    >
-    </calendar>
-   
-    <ng-template #monthviewDisplayEventTemplate let-view="view" let-row="row" let-col="col">
-      <div [class.with-event]="view.dates[row*7+col].events.length" (click)="onCurrentDateChanged(view.dates[row*7+col].events.length)">
-        {{view.dates[row*7+col].label}}
-        <div class="indicator-container">
-          <div class="event-indicator" *ngFor="let e of view.dates[row*7+col].events"></div>
-        </div>
-      </div>
-    </ng-template>
-
-    <ng-template #monthviewEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
-      <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
-        <ion-item class="event-details-item" lines="none"> 
-          <figure>
-            <header>
-              {{selectedDate?.date| date: 'MMM'}}
-            </header>
-            <section>
-              {{selectedDate?.date| date: 'dd'}}
-            </section>
-          </figure>
-          
-          <ion-button class="stepper-btn" color="danger"  fill="clear" (click)="removeFrequency(selectedDate)" [disabled]="selectedDateEventsCount == 0">
-            <ion-icon  name="remove-circle-outline"></ion-icon>
-          </ion-button>
-          <!-- <ion-icon class="stepper-btn"  (click)="removeFrequency(selectedDate)" name="remove-circle-outline"></ion-icon> -->
-          <ion-label>
-            <h1>{{selectedDateEventsCount}}</h1>
-          </ion-label>
-          <ion-button class="stepper-btn" color="success"  fill="clear" (click)="addFrequency(selectedDate)">
-            <ion-icon  name="add-circle-outline"></ion-icon>
-          </ion-button>
-          
-
-          <div>
-            <ion-button fill="clear" (click)=resetFrequency(selectedDate) [disabled]="selectedDateEventsCount == selectedDate?.events.length">
-              <ion-icon class="frequency-icon"  name="refresh-outline"></ion-icon>
-            </ion-button>
-            <ion-ripple-effect></ion-ripple-effect> 
-          </div>
-          <div>
-            <ion-button fill="clear" *ngIf="!isLoading" (click)=saveFrequency(selectedDate) [disabled]="selectedDateEventsCount == selectedDate?.events.length">
-              <ion-icon  class=" button" name="save-outline"></ion-icon>
-            </ion-button>
-            <ion-ripple-effect></ion-ripple-effect> 
-            <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
-          </div>
-          
-          
-          <!-- <ion-button style="margin:0" fill="outline" (click)=resetFrequency(selectedDate) slot="end"><ion-icon  name="refresh-outline"></ion-icon></ion-button>
-          <ion-button style="margin:0" fill="outline"  slot="end"><ion-icon  name="save-outline"></ion-icon></ion-button> -->
-        </ion-item>
-      </ion-list>
-  </ng-template>
-
-
-
-
-<!-- List Headers in Lists -->
-<ion-list class="streaks-container">
-  <ion-list-header lines="none">
-      <ion-label><h1 class="ion-text-center">Longest Streaks</h1></ion-label>
-  </ion-list-header>
-  <ion-item lines="none">
-    <ion-segment scrollable class="streak-segment">
-      <div *ngFor="let s of streaks;index as idx">
-        <div class="notify-badge" [ngClass]="{'gold':idx==0,'silver':idx==1,'bronze':idx==2}"></div>
-        <ion-segment-button class="streak-segment-btn neon-border" value="home">
-          <h3>{{s.Streak}}</h3><p>{{s.StartDate}} - {{s.EndDate}}</p>
-        </ion-segment-button>
-      </div>
-    </ion-segment>
-  </ion-item>
-</ion-list>
-
 
 <!-- Average -->
-<div id="columnChartContainer"></div>
+<!-- <div id="columnChartContainer"></div> -->
 <!-- <div id="bubbleChartContainer"></div> -->
 
 

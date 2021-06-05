@@ -1,21 +1,85 @@
-.stat-item{
-    div{
-        display: flex;
-    }
+ion-content{
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
 
-    ion-icon{
-        font-size: 2em;
-        padding:0.125em
-    }
+    .container{
+        width: 100%;
+        height: 100%;
+        scroll-snap-type: y mandatory;
+        overflow-y: scroll;
 
-    p{
-        font-size:0.75em
+        .scrollsnap-section{
+            width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            position: relative;
+            // display: flex;
+            // flex-direction: column;
+
+        }
     }
 }
+
+.circle{
+    color: black;
+    height: 6em;
+    width: 6em;
+    border-radius: 50%;
+    background: radial-gradient(#fff, #000);
+    display: flex;
+    justify-content: center;
+
+    ion-label{
+        p{
+            color:black
+        }
+        
+    }
+}
+
+.stats-card{
+    border-radius:1em;
+
+    .stats-item{
+        // div{
+        //     display: flex;
+        // }
+        border-radius: 1em;
+        margin: 0.5em;
+        background: linear-gradient(to right bottom, rgb(255, 255, 255, 0.7), rgb(0,0,0,0.3));
+        position: relative;
+
+        ion-label{
+            text-align: center;
+        }
+    
+        ion-icon{
+            font-size: 7.5em;
+            position: absolute;
+            left: 0;
+            opacity: 0.15;
+        }
+    
+        p{
+            font-size:0.75em
+        }
+    }
+}
+
+
 
 ion-card{
     color: var(--ion-color-primary);
     padding:0.5em;
+}
+
+.charts-background{
+    height: 65vh;
+    background: linear-gradient(180deg, rgb(31,31,31), rgb(255,255,255,0.3));
+    position: absolute;
+    width: 100%;
+    border-radius: 0 0 4em 4em;
 }
 
 #gaugeChartContainer{
