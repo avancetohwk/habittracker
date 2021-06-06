@@ -8,40 +8,8 @@
 </ion-header>
 
 <ion-content>
-  <!-- <ion-grid>
-    
-    <ion-row >
-      <ion-col size="7"> 
-        <ion-card class="neon-border">
-        <ion-row class="stat-item">
-          <div >
-            <ion-icon slot="start"  name="flame-outline"></ion-icon>
-            <ion-label>
-              <h2>{{habit?.CurrStreak}}/{{habit?.TargetDays}}</h2>
-              <p >Current Streak</p>
-            </ion-label> 
-          </div>
-        </ion-row>
-        <ion-row class="stat-item">
-          <div >
-            <ion-icon slot="start"  name="sad-outline"></ion-icon>
-            <ion-label>
-              <h2>{{habit==null?"-": parseDate(habit?.FinalTracking?.Date)|date:"MMM dd yyyy"}}</h2>
-              <p>Previous failure</p>
-            </ion-label> 
-          </div>
-        </ion-row>
-      </ion-card>
-      </ion-col>
-      <ion-col size="5"> 
-        <div id="gaugeChartContainer"></div>
-      </ion-col>
-    
-    </ion-row>
-  
-  </ion-grid> -->
   <div class="container">
-    <section class="scrollsnap-section">
+    <section class="scrollsnap-section" >
       <div class="charts-background">
       </div>
         <ion-item lines="none">
@@ -60,113 +28,93 @@
           </ion-slide>
         </ion-slides>
       
+
       
-      <ion-card class="stats-card" style="border-radius:1em;">
+      <ion-card class="stats-card2" style="height: 50vh;">
+        <ion-card style="margin: 0;
+        height: 40vh;
+        display: flex;
+        background: none;
+        box-shadow: none;
+        justify-content: space-evenly;
+        display: flex;
+        flex-wrap: wrap;">
+        <div style="
+            position: absolute;
+            background: linear-gradient(to right bottom, rgb(0 124 121), rgb(104 155 131));
+            height: 18em;
+            width: 18em;
+            border-radius: 50%;
+            top: -5em;
+            left: -2em;
+            z-index: 1;
+        "></div><div style="
+            position: absolute;
+            background: linear-gradient(to right bottom, rgb(3 61 59 / 9%), rgb(0 218 116 / 60%));
+            height: 16em;
+            width: 16em;
+            border-radius: 50%;
+            top: -6em;
+            left: -3em;
+            z-index: 1;
+        "></div>
+
+              <ion-card lines="none" class="stats-item" style="background: none; box-shadow:none;justify-content: flex-start;align-items:normal;padding:0.75em ;">
+                <ion-label >
+                  <!-- <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon> -->
+                  <h1 style="text-align: left;font-size: 2.5em;">CTP</h1>
+                  <p>Target Days: 30</p>
+                </ion-label>
+                <ion-icon name="information-circle-outline"></ion-icon>
+              </ion-card>
+              <ion-card lines="none" class="stats-item" >
+                <ion-label >
+                  <!-- <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon> -->
+                  <h2>0</h2>
+                  <p>Current Streak</p>
+                </ion-label>
+                <ion-icon name="flame-outline"></ion-icon>
+              </ion-card>
+              <ion-card lines="none" class="stats-item" >
+                <ion-label >
+                  <!-- <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon> -->
+                  <h2>Jun 02 2021</h2>
+                  <p>Previous Failure</p>
+                </ion-label>
+                <ion-icon name="sad-outline"></ion-icon>
+              </ion-card>
+              <ion-card lines="none" class="stats-item" >
+                <ion-label >
+                  <!-- <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon> -->
+                  <h2>256</h2>
+                  <p>Total Failures</p>
+                </ion-label>
+                <ion-icon name="podium-outline"></ion-icon>
+              </ion-card>
+        
+        <!-- <ion-item lines="none" class="stats-item"  >
+          <ion-label >
+            <h2>Jun 06</h2>
+            <p>Previous Failure</p>
+          </ion-label>
+          <ion-icon name="sad-outline"></ion-icon>
+        </ion-item>
+        <ion-item lines="none" class="stats-item"  >
+          <ion-label >
+            <h2>1.2</h2>
+            <p>Daily Average</p>
+          </ion-label>
+          <ion-icon name="podium-outline"></ion-icon>
+        </ion-item>
         <ion-item lines="none" class="stats-item" >
           <ion-label >
-            <!-- <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon> -->
             <h2>0</h2>
             <p>Current Streak</p>
           </ion-label>
-          <ion-icon name="flame-outline"></ion-icon>
-      </ion-item>
-      <ion-item lines="none" class="stats-item"  >
-        <ion-label >
-          <!-- <ion-icon style="font-size: 1.5em;" name="sad-outline"></ion-icon> -->
-          <h2>Jun 06</h2>
-          <p>Previous Failure</p>
-        </ion-label>
-        <ion-icon name="sad-outline"></ion-icon>
-      </ion-item>
-      <ion-item lines="none" class="stats-item"  >
-        <ion-label >
-          <!-- <ion-icon style="font-size: 1.5em;" name="podium-outline"></ion-icon> -->
-          <h2>1.2</h2>
-          <p>Daily Average</p>
-        </ion-label>
-        <ion-icon name="podium-outline"></ion-icon>
-      </ion-item>
-      <ion-item lines="none" class="stats-item" >
-        <ion-label >
-          <!-- <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon> -->
-          <h2>0</h2>
-          <p>Current Streak</p>
-        </ion-label>
-        <ion-icon name="flame"></ion-icon>
-    </ion-item>
+          <ion-icon name="flame"></ion-icon>
+        </ion-item> -->
       </ion-card>
-      
-     
-        <!-- <div style="display: flex;justify-content: space-around; margin-top: 1em;">
-          <ion-item lines="none" class="circle" >
-              <ion-label style="text-align: center;">
-                <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon>
-                <p>0</p>
-              </ion-label>
-          </ion-item>
-          <ion-item lines="none" class="circle" >
-            <ion-label style="text-align: center;">
-              <ion-icon style="font-size: 1.5em;" name="sad-outline"></ion-icon>
-              <p>Jun 06</p>
-            </ion-label>
-          </ion-item>
-          <ion-item lines="none" class="circle" >
-            <ion-label style="text-align: center;">
-              <ion-icon style="font-size: 1.5em;" name="podium-outline"></ion-icon>
-              <p>1.2</p>
-            </ion-label>
-          </ion-item>
-          
-        </div>
-        <div style="display: flex;justify-content: space-around; margin-top: 1em;">
-          <ion-item lines="none" class="circle" >
-              <ion-label style="text-align: center;">
-                <ion-icon style="font-size: 1.5em;" name="flame"></ion-icon>
-                <p>0</p>
-              </ion-label>
-          </ion-item>
-          <ion-item lines="none" class="circle" >
-            <ion-label style="text-align: center;">
-              <ion-icon style="font-size: 1.5em;" name="sad"></ion-icon>
-              <p>Jun 06</p>
-            </ion-label>
-          </ion-item>
-          <ion-item lines="none" class="circle" >
-            <ion-label style="text-align: center;">
-              <ion-icon style="font-size: 1.5em;" name="podium"></ion-icon>
-              <p>1.2</p>
-            </ion-label>
-          </ion-item>
-          
-        </div> -->
-      <!-- <ion-item style="margin-top: 1em;">
-        
-        <ion-segment scrollable>
-          <div style="display: flex;justify-content: space-evenly;">
-            <ion-chip>
-              <ion-icon name="flame"></ion-icon>
-              <ion-label>0</ion-label>
-            </ion-chip>
-            <ion-chip>
-              <ion-icon name="sync"></ion-icon>
-              <ion-label>2</ion-label>
-            </ion-chip>
-            <ion-chip>
-              <ion-icon name="sad"></ion-icon>
-              <ion-label>Jun 5 2021</ion-label>
-            </ion-chip>
-            <ion-chip>
-              <ion-icon name="podium"></ion-icon>
-              <ion-label>1.2</ion-label>
-            </ion-chip>
-            
-            <ion-chip>
-              <ion-icon name="flag"></ion-icon>
-              <ion-label>30</ion-label>
-            </ion-chip>
-          </div>
-        </ion-segment>
-      </ion-item> -->
+    </ion-card>
     </section>
     <section class="scrollsnap-section">
       <ion-row>
@@ -262,24 +210,27 @@
   
   
   
-  <!-- List Headers in Lists -->
-  <ion-list class="streaks-container">
-    <ion-list-header lines="none">
-        <ion-label><h1 class="ion-text-center">Longest Streaks</h1></ion-label>
-    </ion-list-header>
-    <ion-item lines="none">
-      <ion-segment scrollable class="streak-segment">
-        <div *ngFor="let s of streaks;index as idx">
-          <div class="notify-badge" [ngClass]="{'gold':idx==0,'silver':idx==1,'bronze':idx==2}"></div>
-          <ion-segment-button class="streak-segment-btn neon-border" value="home">
-            <h3>{{s.Streak}}</h3><p>{{s.StartDate}} - {{s.EndDate}}</p>
-          </ion-segment-button>
-        </div>
-      </ion-segment>
-    </ion-item>
-  </ion-list>
+      <!-- List Headers in Lists -->
+      <ion-list class="streaks-container">
+        <ion-list-header lines="none">
+            <ion-label><h1 class="ion-text-center">Longest Streaks</h1></ion-label>
+        </ion-list-header>
+        <ion-item lines="none">
+          <ion-segment scrollable class="streak-segment">
+            <div *ngFor="let s of streaks;index as idx">
+              <div class="notify-badge" [ngClass]="{'gold':idx==0,'silver':idx==1,'bronze':idx==2}"></div>
+              <ion-segment-button class="streak-segment-btn neon-border" value="home">
+                <h3>{{s.Streak}}</h3><p>{{s.StartDate}} - {{s.EndDate}}</p>
+              </ion-segment-button>
+            </div>
+          </ion-segment>
+        </ion-item>
+      </ion-list>
   
     </section>
+    <div class="habit-details">
+
+    </div>
   </div>
   
   
