@@ -299,7 +299,7 @@ export class DetailsPage implements OnInit {
               labels: {
                   rotation: -45,
                   style: {
-                      color:'black',
+                      //color:'black',
                       fontSize: '13px',
                       fontFamily: 'Verdana, sans-serif'
                   }

@@ -54,6 +54,7 @@ ion-content{
     border-radius:1em;
     background: linear-gradient(246deg, #538c81, #131313);
 
+    
     .stats-item{
         // div{
         //     display: flex;
@@ -84,11 +85,47 @@ ion-content{
 
 .stats-card2{
     border-radius: 0 4em 0em 0em;
-    background: linear-gradient(246deg, #538c81, #131313);
-    justify-content: space-evenly;
-    display: flex;
-    flex-wrap: wrap;
-    height: 40vh;
+    //background: linear-gradient(246deg, #538c81, #131313);
+    // justify-content: space-evenly;
+    // display: flex;
+    // flex-wrap: wrap;
+    
+    height: 45vh;
+    margin: 1em 2em auto 2em;
+
+    .stats-inner-card{
+        margin: 0;
+        height: 40vh;
+        display: flex;
+        background: none;
+        box-shadow: none;
+        justify-content: space-evenly;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .outer-circle{
+        position: absolute;
+        background: linear-gradient(to right bottom, rgb(0 124 121), rgb(5 5 5));//linear-gradient(to right bottom, rgb(0 124 121), rgb(243 253 248));
+        height: 18em;
+        width: 18em;
+        border-radius: 50%;
+        top: -5em;
+        left: -2em;
+        z-index: 1;
+    }
+
+    .inner-circle{
+        position: absolute;
+        background: linear-gradient(to right bottom, rgb(3 61 59 / 9%), rgb(0 218 116 / 60%));
+        height: 16em;
+        width: 16em;
+        border-radius: 50%;
+        top: -6em;
+        left: -3em;
+        z-index: 1;
+    }
+
 
     .stats-item{
         // div{
@@ -102,7 +139,7 @@ ion-content{
         
         justify-content: center;
         align-items: center;
-        background: linear-gradient(to right bottom, rgb(255, 255, 255, 0.7), rgb(0,0,0,0.3));
+        background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.7), rgb(86 255 188 / 34%));// linear-gradient(to right bottom, rgb(255, 255, 255, 0.7), rgb(0,0,0,0.3));
         position: relative;
         z-index: 3;
 
@@ -118,7 +155,8 @@ ion-content{
         }
     
         p{
-            font-size:0.75em
+            font-size:0.75em;
+            color:white;
         }
     }
 }
@@ -131,7 +169,7 @@ ion-card{
 }
 
 .charts-background{
-    height: 65vh;
+    height: 55vh;
     background: linear-gradient(180deg, #112d224d, #034649);
     position: absolute;
     width: 100%;

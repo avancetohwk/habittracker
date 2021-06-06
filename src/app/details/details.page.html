@@ -31,33 +31,8 @@
 
       
       <ion-card class="stats-card2" style="height: 50vh;">
-        <ion-card style="margin: 0;
-        height: 40vh;
-        display: flex;
-        background: none;
-        box-shadow: none;
-        justify-content: space-evenly;
-        display: flex;
-        flex-wrap: wrap;">
-        <div style="
-            position: absolute;
-            background: linear-gradient(to right bottom, rgb(0 124 121), rgb(104 155 131));
-            height: 18em;
-            width: 18em;
-            border-radius: 50%;
-            top: -5em;
-            left: -2em;
-            z-index: 1;
-        "></div><div style="
-            position: absolute;
-            background: linear-gradient(to right bottom, rgb(3 61 59 / 9%), rgb(0 218 116 / 60%));
-            height: 16em;
-            width: 16em;
-            border-radius: 50%;
-            top: -6em;
-            left: -3em;
-            z-index: 1;
-        "></div>
+        <ion-card class="stats-inner-card">
+        <div class="outer-circle"></div><div class="inner-circle"></div>
 
               <ion-card lines="none" class="stats-item" style="background: none; box-shadow:none;justify-content: flex-start;align-items:normal;padding:0.75em ;">
                 <ion-label >
@@ -113,6 +88,24 @@
           </ion-label>
           <ion-icon name="flame"></ion-icon>
         </ion-item> -->
+        <ion-item>
+          <ion-chip>
+            <ion-icon name="flame"></ion-icon>
+            <ion-label>0</ion-label>
+          </ion-chip>
+          <ion-chip>
+            <ion-icon name="flame"></ion-icon>
+            <ion-label>0</ion-label>
+          </ion-chip>
+          <ion-chip>
+            <ion-icon name="flame"></ion-icon>
+            <ion-label>0</ion-label>
+          </ion-chip>
+          <ion-chip>
+            <ion-icon name="flame"></ion-icon>
+            <ion-label>0</ion-label>
+          </ion-chip>
+        </ion-item>
       </ion-card>
     </ion-card>
     </section>
