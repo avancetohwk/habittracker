@@ -21,6 +21,14 @@ ion-content{
     }
 }
 
+.charts-background{
+    height: 55vh;
+    background: linear-gradient(180deg, #112d224d, #034649);
+    position: absolute;
+    width: 100%;
+    border-radius: 0 0 0em 5em;
+}
+
 .habit-details{
     background: linear-gradient(180deg, #112d224d, #034649);
     position: absolute;
@@ -168,13 +176,7 @@ ion-card{
     padding:0.5em;
 }
 
-.charts-background{
-    height: 55vh;
-    background: linear-gradient(180deg, #112d224d, #034649);
-    position: absolute;
-    width: 100%;
-    border-radius: 0 0 0em 5em;
-}
+
 
 #gaugeChartContainer{
     position: relative;
@@ -231,7 +233,7 @@ ion-card{
 }
  
 .event-indicator {
-  background: var(--ion-color-success);
+  background: var(--ion-color-dark-contrast);
   width: 0.2em;
   height: 0.2em;
   border-radius: 0.2em;
@@ -239,36 +241,100 @@ ion-card{
 }
  
 :host ::ng-deep {
+    .monthview-datetable{
+        border: none !important;
+        margin: 0 1em 0 1em !important;
+
+        // thead{
+        //     tr{
+        //         border-bottom: 1px solid var(--ion-color-light) !important;
+        //     }
+        // }
+        th{
+            border: none !important;
+            color: var(--ion-color-light) !important;
+            border-bottom: 1px solid var(--ion-color-light) !important;
+        }
+        td{
+            border:none !important;
+            //padding:0.4em !important;
+            height: 2em !important;
+            font-size: 14px !important;
+        }
+    }
     
     .monthview-container{
         height: auto !important;
     }
 
-    .monthview-datetable td{
-        padding:0.4em !important;
-    }
 
     .monthview-datetable td.monthview-primary-with-event{
-        padding-bottom:0.2em !important;
+        padding-bottom:0.1em !important;
+        background-color: transparent !important;
+
+        .with-event {
+            background: linear-gradient(115deg, var(--ion-color-dark), var(--ion-color-light)) !important;
+            // background-color: var(--ion-color-dark);
+            color: var(--ion-color-dark-contrast);
+        }
     }
 
     .monthview-datetable td.monthview-secondary-with-event{
-        padding-bottom:0.2em !important;
+        padding-bottom:0.1em !important;
+        background-color: transparent !important;
+
+        .with-event {
+            //background:linear-gradient(339deg, var(--ion-color-light-tint), var(--ion-color-dark-tint)) !important;
+            background-color: var(--ion-color-dark-tint);
+        }
+    }
+
+    .monthview-datetable td.monthview-selected{
+        background: linear-gradient(180deg, var(--ion-color-light), transparent) !important;
+        border-radius: 0.5em;
+        .with-event {
+            //background:linear-gradient(339deg, var(--ion-color-light-tint), var(--ion-color-dark-tint)) !important;
+            background: none !important;
+        }
+    }
+
+    .monthview-datetable td.monthview-current{
+        //background-color: var(--ion-color-medium) !important;
+        background: linear-gradient(180deg, var(--ion-color-medium), transparent) !important;
+        border-radius: 0.5em;
+
+        .with-event {
+            //background:linear-gradient(339deg, var(--ion-color-light-tint), var(--ion-color-dark-tint)) !important;
+            background: none !important;
+        }
+      }
+
+      .with-event {
+        border-radius: 0.3em;
+        height: 2em;
+        width: 2em;
+        margin: 0 auto;
     }
 
 //   .monthview-primary-with-event {
-//     background-color: white !important;
+//     background-color: transparent !important;//var(--ion-color-dark) !important;
+//     /* align-items: center; */
+//     line-height: 1em !important;
 //   }
+
  
 //   .monthview-selected {
-//     background-color: var(--ion-color-success) !important;
+//     background: linear-gradient(180deg, var(--ion-color-light), transparent) !important;
+//     //background-color: var(--ion-color-light) !important;
+//     border-radius: 0.5em;
+//     //color: var(--ion-color-light-contrast) !important;
 //   }
+
+  
 }
- 
-.with-event {
-//   background-color: var(--ion-color-primary);
-//   border-radius: 15px;
-}
+
+
+
 /* @end main calendar*/
 
 ion-item::part(native){
@@ -276,6 +342,10 @@ ion-item::part(native){
 }
 .event-detail-container{
     background-color: transparent;
+
+    ion-button::part(native){
+        padding: 0;
+    }
 }
 
 .event-details-item{
@@ -315,12 +385,12 @@ figure {
 	
 	header {
 		width: 100%;
-		height: 40%;
+		height: 45%;
 		
 		position: absolute;
 		top: -1px;
 		
-		background-color: var(--ion-color-primary);//#fa565a;
+		background-color: var(--ion-color-dark);//#fa565a;
 		border-radius: 0.3em 0.3em 0 0;
 		border-bottom: 3px solid #e5e5e5;
 		

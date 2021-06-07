@@ -25,6 +25,7 @@ export class DetailsPage implements OnInit {
   
   private habit: IHabit;
   isLoading:boolean = false;
+  isEdit:boolean = false;
   gaugeChart;
   bubbleChart;
   columnChart;
@@ -299,7 +300,7 @@ export class DetailsPage implements OnInit {
               labels: {
                   rotation: -45,
                   style: {
-                      //color:'black',
+                      color:'#fff',
                       fontSize: '13px',
                       fontFamily: 'Verdana, sans-serif'
                   }
@@ -480,6 +481,7 @@ export class DetailsPage implements OnInit {
   }
 
   resetFrequency(calendarSelection){
+      this.isEdit = false;
       this.selectedDateEventsCount = calendarSelection.events.length;
   }
 
@@ -513,6 +515,7 @@ export class DetailsPage implements OnInit {
           };
           
           this.habitTrackingProvider.AddHabitTracking(newTracking).then(res => {
+            this.isEdit = false;
             if(nextTracking){
               console.log("Tracking updated successfully. Updating next tracking.")
               this.updateNextTracking(nextTracking, selectedDate);
@@ -524,6 +527,7 @@ export class DetailsPage implements OnInit {
           },
           (error) => {
               // this.loadError = true;
+              this.isEdit = false;
               this.isLoading = false;
               console.error(error.message)
               this.toastService.presentToast(error.message);

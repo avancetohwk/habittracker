@@ -157,20 +157,57 @@
   
       <ng-template #monthviewEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
         <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
-          <ion-item class="event-details-item" lines="none"> 
-            <figure>
-              <header>
-                {{selectedDate?.date| date: 'MMM'}}
-              </header>
-              <section>
-                {{selectedDate?.date| date: 'dd'}}
-              </section>
-            </figure>
+          <ion-card class="event-details-item" style="display: flex;justify-content: space-between;margin: 0.5em 1em 0.5em 1em; background:linear-gradient(
+            182deg
+            , rgb(3 70 73), rgb(141 199 177 / 62%));;" lines="none"> 
+            <div style="display: flex;align-items: center;">
+              <div style="display: flex;justify-content: flex-start;align-items: center;">
+                <figure>
+                  <header>
+                    {{selectedDate?.date| date: 'MMM'}}
+                  </header>
+                  <section>
+                    {{selectedDate?.date| date: 'dd'}}
+                  </section>
+                </figure>
+                <ion-icon style="margin-left:1em;" name="flame-outline"></ion-icon>
+                <ion-label style="text-align: left;margin-right: 2em;"><h1>{{selectedDateEventsCount}}</h1></ion-label>
+              </div>
+              <div >
+                <ion-button class="stepper-btn" color="danger" *ngIf="isEdit"  fill="clear" (click)="removeFrequency(selectedDate)" [disabled]="selectedDateEventsCount == 0">
+                  <ion-icon  name="remove-circle-outline"></ion-icon>
+                </ion-button>
+                <ion-button class="stepper-btn" color="success" *ngIf="isEdit" fill="clear" (click)="addFrequency(selectedDate)">
+                  <ion-icon  name="add-circle-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+            <div style="display: flex;">
+              <ion-button class="stepper-btn" color="primary"  fill="clear" (click)="isEdit = !isEdit" *ngIf="!isEdit">
+                <ion-icon  name="create-outline"></ion-icon>
+              </ion-button>
+              <div>
+                <ion-button fill="clear" *ngIf="isEdit" (click)=resetFrequency(selectedDate) [disabled]="isLoading">
+                  <ion-icon class="frequency-icon"  name="close"></ion-icon>
+                </ion-button>
+                <ion-ripple-effect></ion-ripple-effect> 
+              </div>
+              <div>
+                <ion-button fill="clear" *ngIf="!isLoading && isEdit" (click)=saveFrequency(selectedDate) [disabled]="selectedDateEventsCount == selectedDate?.events.length">
+                  <ion-icon  class=" button" name="save-outline"></ion-icon>
+                </ion-button>
+                <ion-ripple-effect></ion-ripple-effect> 
+                <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+              </div>
+            </div>
             
-            <ion-button class="stepper-btn" color="danger"  fill="clear" (click)="removeFrequency(selectedDate)" [disabled]="selectedDateEventsCount == 0">
+            
+           
+            
+            
+            <!-- <ion-button class="stepper-btn" color="danger"  fill="clear" (click)="removeFrequency(selectedDate)" [disabled]="selectedDateEventsCount == 0">
               <ion-icon  name="remove-circle-outline"></ion-icon>
             </ion-button>
-            <!-- <ion-icon class="stepper-btn"  (click)="removeFrequency(selectedDate)" name="remove-circle-outline"></ion-icon> -->
             <ion-label>
               <h1>{{selectedDateEventsCount}}</h1>
             </ion-label>
@@ -191,12 +228,13 @@
               </ion-button>
               <ion-ripple-effect></ion-ripple-effect> 
               <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
-            </div>
+            </div> -->
             
             
             <!-- <ion-button style="margin:0" fill="outline" (click)=resetFrequency(selectedDate) slot="end"><ion-icon  name="refresh-outline"></ion-icon></ion-button>
             <ion-button style="margin:0" fill="outline"  slot="end"><ion-icon  name="save-outline"></ion-icon></ion-button> -->
-          </ion-item>
+          </ion-card>
+              
         </ion-list>
     </ng-template>
   
