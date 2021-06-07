@@ -13,7 +13,8 @@
     </ion-toolbar>
   </ion-header>
   <ion-list style="background-color: transparent;">
-    <ion-card *ngFor="let habit of habits" class="neon-border" style="border: 1px solid white" >
+    <ion-card *ngFor="let habit of habits" class="habit-card" >
+      <p class="watermark">{{habit?.Name}}</p>
       <ion-card-header (click)="goToDetailsPage(habit)">
         <ion-card-title>{{habit?.Name}}</ion-card-title>
       </ion-card-header>
@@ -56,9 +57,9 @@
               
             </ion-col>
           </ion-row>
-          <ion-row style="position: relative;margin-top:0.5em">
-            <ion-col size="10" style="margin-top: 1em;">
-              <ion-progress-bar  class="top-bar" style="height: 0.75em; position: absolute;z-index: 2; border-radius: 0.2em;"   value={{habit.Completed}} buffer={{habit.Completed}}></ion-progress-bar>
+          <ion-row class="progress-bar-row" >
+            <ion-col size="10">
+              <ion-progress-bar value={{habit.Completed}} buffer={{habit.Completed}}></ion-progress-bar>
             </ion-col>
             <!-- <ion-col size="2" >
               <ion-button fill="clear" style="height: auto;"><ion-icon style="font-size: 2em;"  name="refresh" ></ion-icon></ion-button>

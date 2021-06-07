@@ -3,12 +3,39 @@
     margin-right: 0.5em;
 }
 
+.habit-card{
+    border: 1px solid var(--ion-color-dark);
+    color: var(--ion-color-light);
+    background: linear-gradient(180deg, #112d224d, #034649);
+    position: relative;
+
+    p.watermark{
+        position: absolute;
+        font-size: 11em;
+        top: -1.3em;
+        opacity: 0.02;
+        color: var(--ion-color-light);
+    }
+
+    .progress-bar-row{
+        position: relative;
+        margin-top:0.5em
+
+        ion-col{
+            margin-top: 1em;
+        }
+
+        ion-progress-bar{
+            height: 0.75em; 
+            position: absolute;
+            z-index: 2; 
+            border-radius: 0.2em;
+        }
+    }
+
+    
+}
+
 ion-item-option > ion-icon{
     font-size: 2em;
 }
-
-.top-bar{
-    
-    // --buffer-background: #e02424 !important;
-}
-
