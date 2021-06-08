@@ -147,9 +147,16 @@ ion-content{
         
         justify-content: center;
         align-items: center;
-        background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.7), rgb(86 255 188 / 34%));// linear-gradient(to right bottom, rgb(255, 255, 255, 0.7), rgb(0,0,0,0.3));
+        //background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.7), rgb(86 255 188 / 34%));// linear-gradient(to right bottom, rgb(255, 255, 255, 0.7), rgb(0,0,0,0.3));
         position: relative;
         z-index: 3;
+
+        box-shadow: 1.5em 1.5em 4em rgba(0,0,0,0.5);
+        background: rgb(69 69 69 / 30%);
+        border-top: 1px solid rgba(255,255,255,0.5);
+        border-left: 1px solid rgba(255,255,255,0.5);
+        color: #fff;
+        backdrop-filter: blur(0.3em);
 
         ion-label{
             text-align: center;
@@ -430,6 +437,7 @@ figure {
 }
 
 .streaks-container{
+    margin-top:1rem;
     background-color: transparent;
 }
 
@@ -477,7 +485,7 @@ figure {
     // border-radius: 1em;
     margin-right: 0.5em;
     width: 10em;
-    height: 6em;
+    height: 12em;// 6em;
 
 
     box-shadow: 1.5em 1.5em 4em rgba(0,0,0,0.5);
@@ -494,9 +502,13 @@ figure {
 
     .watermark{
         position: absolute;
-        font-size: 7em;
+        // font-size: 7em;
+        // top: -0.02em;
+        // left: 0.5em;
+
+        font-size: 9em;
         top: -0.02em;
-        left: 0.5em;
+        left: 0.4em;
         opacity: 0.07;
         color: var(--ion-color-light);
     }

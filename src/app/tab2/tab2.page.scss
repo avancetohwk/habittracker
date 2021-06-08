@@ -1,3 +1,20 @@
+.loading{
+    --background: rgba(84, 120, 106 ,0.3);;
+    --spinner-color: #fff;
+
+    border-top: 1px solid rgba(255,255,255,0.5);
+    border-left: 1px solid rgba(255,255,255,0.5);
+    color: #fff;
+    backdrop-filter: blur(0.3em);
+}
+
+.my-custom-class {
+    --background: #222;
+    --spinner-color: #fff;
+  
+    color: #fff;
+  }
+
 .habitLabel{
     flex: none;
     margin-right: 0.5em;

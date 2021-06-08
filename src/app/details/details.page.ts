@@ -34,7 +34,7 @@ export class DetailsPage implements OnInit {
   selectedYear = "2021";
 
   slideOpts_Flip = {
-    loop:true,
+    //loop:true,
     on: {
       beforeInit() {
         const swiper = this;
@@ -125,7 +125,7 @@ export class DetailsPage implements OnInit {
 
   slideOpts_Cover = {
     slidesPerView: 1,
-    loop:true,
+    //loop:true,
     coverflowEffect: {
       rotate: 50,
       stretch: 0,
@@ -386,7 +386,7 @@ export class DetailsPage implements OnInit {
                       setTimeout (function () {
                         self.reflow ();
                         self.tooltip.refresh(self.series[0].data[0]);
-                      }, 0)
+                      }, 10)
                     }
                 }
             },
@@ -465,7 +465,7 @@ export class DetailsPage implements OnInit {
                   // self.tooltip.refresh(self.series[0].data[0]);
                   setTimeout (function () {
                     self.reflow ();
-                  }, 0)
+                  }, 10)
                 }
             }
           },

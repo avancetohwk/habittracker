@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, ɵCompiler_compileModuleSync__POST_R3__ } from '@angular/core';
 import { HabitTrackingProvider } from 'src/providers/habitTracker/habitTracker';
 import { HabitProvider } from 'src/providers/habits/habits';
-import { ModalController, NavController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, NavController, ToastController } from '@ionic/angular';
 import { IHabit, IHabitTracker } from 'src/interface/habit.interface';
 import { ToastService, isDateBeforeToday, parseDate, getStreak } from '../common/util';
 import { Observable, forkJoin, zip } from 'rxjs';
@@ -19,14 +19,29 @@ export class Tab2Page {
   habits: IHabit;//AngularFirestoreCollection<IHabit>;
   habitTrackings: IHabitTracker;//AngularFirestoreCollection<IHabitTracker>;
   parseDate;
+  loading;
 
-  constructor(private modalCtrl: ModalController,private toastCtrl: ToastController,
+  constructor(private modalCtrl: ModalController,private toastCtrl: ToastController, private loadingCtrl: LoadingController,
              private habitProvider: HabitProvider, private habitTrackingProvider: HabitTrackingProvider,
              private toastService: ToastService, private router:Router) {
       //this.getHabitTrackings();
+      this.presentLoadingWithOptions();
       this.parseDate = parseDate;
       this.getHabits();
 
+  }
+
+  async presentLoadingWithOptions() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Loading...',
+      translucent: true,
+      cssClass: 'loading',
+      spinner:'crescent'
+    });
+    await this.loading.present();
+
+    // const { role, data } = await loading.onDidDismiss();
+    // console.log('Loading dismissed with role:', role);
   }
 
   getHabits(){
@@ -52,10 +67,16 @@ export class Tab2Page {
                         this.habits[idx].CurrStreak = getStreak(parseDate(this.habits[idx].FinalTracking.Date), new Date() );
                         this.habits[idx].Completed = this.habits[idx].CurrStreak/this.habits[idx].TargetDays;
                     }
+                    console.log('finally')
+                    this.loading.dismiss();
+                    this.isLoading = false;
+
                 });
             }catch(Exception){
                 this.habits = null;
             }finally{
+                
+                //this.loading.dismiss();
                 this.isAddingTracking = false;
             }
         }

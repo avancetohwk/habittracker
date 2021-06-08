@@ -21,6 +21,7 @@ registerLocaleData(localeEn);
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JsonProvider } from 'src/providers/json/json';
+import { enterAnimation, pageTransition } from './animations/nav-animation';
  
 
 // import { AngularFireModule } from 'angularfire2';
@@ -30,7 +31,9 @@ import { JsonProvider } from 'src/providers/json/json';
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, 
-    IonicModule.forRoot(), 
+    IonicModule.forRoot({
+      navAnimation:enterAnimation
+    }), 
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
