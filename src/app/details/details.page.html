@@ -12,18 +12,23 @@
     <section class="scrollsnap-section" >
       <div class="charts-background">
       </div>
-        <ion-item lines="none">
+      <div style="display: flex;
+      justify-content: space-between;
+      width: 90%;
+      align-items: center;
+      margin: 0.5em;">
           <ion-label>Monthly Frequency</ion-label>
           <ion-select interface="popover" [value]="selectedYear">
             <ion-select-option  value="2021">2021</ion-select-option>
             <ion-select-option value="2020">2020</ion-select-option>
           </ion-select>
-        </ion-item>
-        <ion-slides>
-          <ion-slide>
+        </div>
+        <ion-slides [options]="slideOpts_Flip">
+          <ion-slide >
+              
             <div id="columnChartContainer"></div>
           </ion-slide>
-          <ion-slide>
+          <ion-slide >
             <div id="gaugeChartContainer"></div>
           </ion-slide>
         </ion-slides>
