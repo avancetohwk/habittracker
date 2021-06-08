@@ -255,7 +255,8 @@
           <ion-segment scrollable class="streak-segment">
             <div *ngFor="let s of streaks;index as idx">
               <div class="notify-badge" [ngClass]="{'gold':idx==0,'silver':idx==1,'bronze':idx==2}"></div>
-              <ion-segment-button class="streak-segment-btn neon-border" value="home">
+              <ion-segment-button class="streak-segment-btn " value="home">
+                <ion-icon class="watermark" name="flame-outline"></ion-icon>
                 <h3>{{s.Streak}}</h3><p>{{s.StartDate}} - {{s.EndDate}}</p>
               </ion-segment-button>
             </div>

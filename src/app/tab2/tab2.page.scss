@@ -4,10 +4,18 @@
 }
 
 .habit-card{
-    border: 1px solid var(--ion-color-dark);
-    color: var(--ion-color-light);
-    background: linear-gradient(180deg, #112d224d, #034649);
-    position: relative;
+    // border: 1px solid var(--ion-color-dark);
+    // color: var(--ion-color-light);
+    // background: linear-gradient(180deg, #112d224d, #034649);
+    // position: relative;
+
+    box-shadow: 1.5em 1.5em 4em rgba(0,0,0,0.5);
+    border-radius: 1em;
+    background: rgba(84, 120, 106 ,0.3);
+    border-top: 1px solid rgba(255,255,255,0.5);
+    border-left: 1px solid rgba(255,255,255,0.5);
+    color: #fff;
+    backdrop-filter: blur(0.3em);
 
     p.watermark{
         position: absolute;
@@ -38,4 +46,34 @@
 
 ion-item-option > ion-icon{
     font-size: 2em;
+}
+
+.outer-circle{
+    position: absolute;
+    background: linear-gradient(to right bottom, rgba(0, 124, 121, 0.3), rgba(5,5,5,0.3));
+    height: 18em;
+    width: 18em;
+    border-radius: 50%;
+    top: 23em;
+    left: -6em;
+}
+
+.inner-circle{
+    position: absolute;
+    background: linear-gradient(to right bottom, rgb(0 0 0 / 30%), rgba(0, 218, 116, 0.3));
+    height: 16em;
+    width: 16em;
+    border-radius: 50%;
+    top: 16em;
+    left: 6em;
+}
+
+.small-circle{
+    position: absolute;
+    background: linear-gradient(to right bottom, rgba(0, 0, 0, 0.3), rgb(126 244 189 / 30%));
+    height: 10em;
+    width: 10em;
+    border-radius: 50%;
+    left: 20em;
+    bottom: 9em;
 }
