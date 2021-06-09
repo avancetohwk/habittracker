@@ -12,42 +12,41 @@
     <section class="scrollsnap-section" >
       <div class="charts-background">
       </div>
-      <div style="display: flex;
-      justify-content: space-between;
-      width: 90%;
-      align-items: center;
-      margin: 0.5em;">
-          <ion-label>Monthly Frequency</ion-label>
-          <ion-select interface="popover" [value]="selectedYear">
-            <ion-select-option  value="2021">2021</ion-select-option>
-            <ion-select-option value="2020">2020</ion-select-option>
-          </ion-select>
-        </div>
-        <ion-slides [options]="slideOpts_Flip">
-          <ion-slide >
-              
-            <div id="columnChartContainer"></div>
-          </ion-slide>
-          <ion-slide >
-            <div id="gaugeChartContainer"></div>
-          </ion-slide>
-        </ion-slides>
+      <div class="chart-title-container">
+        <ion-label>Monthly Frequency</ion-label>
+        <ion-select interface="popover" [value]="selectedYear">
+          <ion-select-option  value="2021">2021</ion-select-option>
+          <ion-select-option value="2020">2020</ion-select-option>
+        </ion-select>
+      </div>
+      <ion-slides [options]="slideOpts_Flip">
+        <ion-slide >
+          <div id="lineChartContainer"></div>
+        </ion-slide>
+        <ion-slide >
+            
+          <div id="columnChartContainer"></div>
+        </ion-slide>
+        <ion-slide >
+          <div id="gaugeChartContainer"></div>
+        </ion-slide>
+      </ion-slides>
       
 
       
-      <ion-card class="stats-card2" style="height: 50vh;">
-        <ion-card class="stats-inner-card">
-        <div class="outer-circle"></div><div class="inner-circle"></div>
+      <ion-card class="stats-card2 glassmorphism-black">
+        <ion-card class="stats-inner-card ">
+        <div class="outer-circle "></div><div class="inner-circle "></div>
 
-              <ion-card lines="none" class="stats-item" style="background: none; box-shadow:none;justify-content: flex-start;align-items:normal;padding:0.75em ;border:none;backdrop-filter: none;">
+              <ion-card lines="none" class="stats-item" >
                 <ion-label >
                   <!-- <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon> -->
-                  <h1 style="text-align: left;font-size: 2.5em;">CTP</h1>
-                  <p>Target Days: 30</p>
+                  <h1 >{{habit?.Name}}</h1>
+                  <p>Target Days: {{habit?.TargetDays}}</p>
                 </ion-label>
                 <ion-icon name="information-circle-outline"></ion-icon>
               </ion-card>
-              <ion-card lines="none" class="stats-item" >
+              <ion-card lines="none" class="stats-item glassmorphism-black" >
                 <ion-label >
                   <!-- <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon> -->
                   <h2>0</h2>
@@ -55,67 +54,27 @@
                 </ion-label>
                 <ion-icon name="flame-outline"></ion-icon>
               </ion-card>
-              <ion-card lines="none" class="stats-item" >
+              <ion-card lines="none" class="stats-item glassmorphism-black" >
                 <ion-label >
                   <!-- <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon> -->
-                  <h2>Jun 02 2021</h2>
+                  <h2>{{habit==null?"-": parseDate(habit?.FinalTracking?.Date)|date:"MMM dd yyyy"}}</h2>
                   <p>Previous Failure</p>
                 </ion-label>
                 <ion-icon name="sad-outline"></ion-icon>
               </ion-card>
-              <ion-card lines="none" class="stats-item" >
+              <ion-card lines="none" class="stats-item glassmorphism-black" >
                 <ion-label >
                   <!-- <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon> -->
-                  <h2>256</h2>
+                  <h2>{{habit?.TotalFrequency}}</h2>
                   <p>Total Failures</p>
                 </ion-label>
                 <ion-icon name="podium-outline"></ion-icon>
               </ion-card>
-        
-        <!-- <ion-item lines="none" class="stats-item"  >
-          <ion-label >
-            <h2>Jun 06</h2>
-            <p>Previous Failure</p>
-          </ion-label>
-          <ion-icon name="sad-outline"></ion-icon>
-        </ion-item>
-        <ion-item lines="none" class="stats-item"  >
-          <ion-label >
-            <h2>1.2</h2>
-            <p>Daily Average</p>
-          </ion-label>
-          <ion-icon name="podium-outline"></ion-icon>
-        </ion-item>
-        <ion-item lines="none" class="stats-item" >
-          <ion-label >
-            <h2>0</h2>
-            <p>Current Streak</p>
-          </ion-label>
-          <ion-icon name="flame"></ion-icon>
-        </ion-item> -->
-        <ion-item>
-          <ion-chip>
-            <ion-icon name="flame"></ion-icon>
-            <ion-label>0</ion-label>
-          </ion-chip>
-          <ion-chip>
-            <ion-icon name="flame"></ion-icon>
-            <ion-label>0</ion-label>
-          </ion-chip>
-          <ion-chip>
-            <ion-icon name="flame"></ion-icon>
-            <ion-label>0</ion-label>
-          </ion-chip>
-          <ion-chip>
-            <ion-icon name="flame"></ion-icon>
-            <ion-label>0</ion-label>
-          </ion-chip>
-        </ion-item>
       </ion-card>
     </ion-card>
     </section>
     <section class="scrollsnap-section">
-      <ion-row style="padding-top:1rem">
+      <ion-row class="calendar-title-container">
         <!-- Move back one screen of the slides -->
         <ion-col size="2">
           <ion-button fill="clear" (click)="back()">
@@ -161,12 +120,10 @@
       </ng-template>
   
       <ng-template #monthviewEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
-        <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
-          <ion-card class="event-details-item" style="display: flex;justify-content: space-between;margin: 0.5em 1em 0.5em 1em; background:linear-gradient(
-            182deg
-            , rgb(3 70 73), rgb(141 199 177 / 62%));;" lines="none"> 
-            <div style="display: flex;align-items: center;">
-              <div style="display: flex;justify-content: flex-start;align-items: center;">
+        <!-- <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">  -->
+          <ion-card class="event-details-card glassmorphism-black" *ngIf="showEventDetail" lines="none"> 
+            <div class="flex-center">
+              <div class="flex-center" >
                 <figure>
                   <header>
                     {{selectedDate?.date| date: 'MMM'}}
@@ -175,8 +132,8 @@
                     {{selectedDate?.date| date: 'dd'}}
                   </section>
                 </figure>
-                <ion-icon style="margin-left:1em;" name="flame-outline"></ion-icon>
-                <ion-label style="text-align: left;margin-right: 2em;"><h1>{{selectedDateEventsCount}}</h1></ion-label>
+                <ion-icon  name="flame-outline"></ion-icon>
+                <ion-label ><h1>{{selectedDateEventsCount}}</h1></ion-label>
               </div>
               <div >
                 <ion-button class="stepper-btn" color="danger" *ngIf="isEdit"  fill="clear" (click)="removeFrequency(selectedDate)" [disabled]="selectedDateEventsCount == 0">
@@ -186,8 +143,8 @@
                   <ion-icon  name="add-circle-outline"></ion-icon>
                 </ion-button>
               </div>
-            </div>
-            <div style="display: flex;">
+            </div> 
+            <div class="flex-center">
               <ion-button class="stepper-btn" color="primary"  fill="clear" (click)="isEdit = !isEdit" *ngIf="!isEdit">
                 <ion-icon  name="create-outline"></ion-icon>
               </ion-button>
@@ -197,7 +154,7 @@
                 </ion-button>
                 <ion-ripple-effect></ion-ripple-effect> 
               </div>
-              <div>
+              <div class="flex-center">
                 <ion-button fill="clear" *ngIf="!isLoading && isEdit" (click)=saveFrequency(selectedDate) [disabled]="selectedDateEventsCount == selectedDate?.events.length">
                   <ion-icon  class=" button" name="save-outline"></ion-icon>
                 </ion-button>
@@ -205,42 +162,9 @@
                 <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
               </div>
             </div>
-            
-            
-           
-            
-            
-            <!-- <ion-button class="stepper-btn" color="danger"  fill="clear" (click)="removeFrequency(selectedDate)" [disabled]="selectedDateEventsCount == 0">
-              <ion-icon  name="remove-circle-outline"></ion-icon>
-            </ion-button>
-            <ion-label>
-              <h1>{{selectedDateEventsCount}}</h1>
-            </ion-label>
-            <ion-button class="stepper-btn" color="success"  fill="clear" (click)="addFrequency(selectedDate)">
-              <ion-icon  name="add-circle-outline"></ion-icon>
-            </ion-button>
-            
-  
-            <div>
-              <ion-button fill="clear" (click)=resetFrequency(selectedDate) [disabled]="selectedDateEventsCount == selectedDate?.events.length">
-                <ion-icon class="frequency-icon"  name="refresh-outline"></ion-icon>
-              </ion-button>
-              <ion-ripple-effect></ion-ripple-effect> 
-            </div>
-            <div>
-              <ion-button fill="clear" *ngIf="!isLoading" (click)=saveFrequency(selectedDate) [disabled]="selectedDateEventsCount == selectedDate?.events.length">
-                <ion-icon  class=" button" name="save-outline"></ion-icon>
-              </ion-button>
-              <ion-ripple-effect></ion-ripple-effect> 
-              <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
-            </div> -->
-            
-            
-            <!-- <ion-button style="margin:0" fill="outline" (click)=resetFrequency(selectedDate) slot="end"><ion-icon  name="refresh-outline"></ion-icon></ion-button>
-            <ion-button style="margin:0" fill="outline"  slot="end"><ion-icon  name="save-outline"></ion-icon></ion-button> -->
           </ion-card>
               
-        </ion-list>
+        <!-- </ion-list>  -->
     </ng-template>
   
   
@@ -255,9 +179,11 @@
           <ion-segment scrollable class="streak-segment">
             <div *ngFor="let s of streaks;index as idx">
               <div class="notify-badge" [ngClass]="{'gold':idx==0,'silver':idx==1,'bronze':idx==2}"></div>
-              <ion-segment-button class="streak-segment-btn " value="home">
+              <ion-segment-button class="streak-segment-btn glassmorphism-green" value="home">
                 <ion-icon class="watermark" name="flame-outline"></ion-icon>
-                <h3>{{s.Streak}}</h3><p>{{s.StartDate}} - {{s.EndDate}}</p>
+                <h1>{{s.Streak}}</h1>
+                <p>{{s.StartDate}}</p>
+                <p>{{s.EndDate}}</p>
               </ion-segment-button>
             </div>
           </ion-segment>

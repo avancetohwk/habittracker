@@ -7,7 +7,8 @@ export interface IHabit {
     TargetDays: number,
     Trackings: IHabitTracker[],
     FinalTracking: IHabitTracker,
-    CurrStreak:number
+    CurrStreak:number,
+    TotalFrequency:number
 }
 
 export interface IHabitTracker{

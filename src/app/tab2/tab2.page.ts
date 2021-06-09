@@ -66,6 +66,7 @@ export class Tab2Page {
                         this.habits[idx].FinalTracking = currTrackings[(<any>currTrackings).length -1];
                         this.habits[idx].CurrStreak = getStreak(parseDate(this.habits[idx].FinalTracking.Date), new Date() );
                         this.habits[idx].Completed = this.habits[idx].CurrStreak/this.habits[idx].TargetDays;
+                        this.habits[idx].TotalFrequency = (<any>currTrackings).reduce((sum,t)=>{return sum+t.Frequency},0)
                     }
                     console.log('finally')
                     this.loading.dismiss();

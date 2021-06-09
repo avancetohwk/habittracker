@@ -29,6 +29,7 @@ export class DetailsPage implements OnInit {
   gaugeChart;
   bubbleChart;
   columnChart;
+  lineChart
   streaks;
   parseDate;
   selectedYear = "2021";
@@ -246,7 +247,11 @@ export class DetailsPage implements OnInit {
       chart: {
           backgroundColor: 'transparent',
           height: '80%',
+          
       },
+      credits: {
+        enabled: false
+    },
       colors: ['#fff', '#000','#07cdff','#F62366', '#9DFF02', '#0CCDD6'],
       // title: {
       //     style: {
@@ -269,6 +274,7 @@ export class DetailsPage implements OnInit {
     this.getCalendarData();
     this.habit.FinalTracking = this.habit.Trackings[(<any>this.habit.Trackings).length -1];
     this.habit.CurrStreak = getStreak(parseDate(this.habit.FinalTracking.Date), new Date() );
+    this.habit.TotalFrequency = this.habit.Trackings.reduce((sum,t)=>{return sum+t.Frequency},0)
 
   }
 
@@ -339,21 +345,6 @@ export class DetailsPage implements OnInit {
 
     //bubbleSeries
     var currYear = new Date().getFullYear();
-    // habit.Trackings.filter(t=>parseDate(t.Date).getFullYear() == currYear).forEach(t=>{
-
-    // })
-    // var groups = habit.Trackings.filter(t=>parseDate(t.Date).getFullYear() == currYear).reduce((prev, cur)=> {
-    //   var date = parseDate(cur.Date);
-      
-    //   var year = moment(date).format("yyyy");
-    //   var month = moment(date).format("MMM");
-    //   var key = moment(date).format("MMM yyyy");
-    //   (prev[key]?prev[key] = [prev[key][0],prev[key][1]+=1, prev[key][2]+=cur.Frequency]:prev[key]= [date.getMonth()+1,1,cur.Frequency]);
-
-    //   //(prev[key]?prev[key].data.push(cur):prev[key]= {group: String(key), data: [cur],year: year});
-    //   return prev;
-    // }, {});
-
     var groups = habit.Trackings.filter(t=>parseDate(t.Date).getFullYear() == currYear).reduce((prev, cur)=> {
       var date = parseDate(cur.Date);
       var key = moment(date).format("MMM");
@@ -364,14 +355,24 @@ export class DetailsPage implements OnInit {
     }, {});
     var result = Object.keys(groups).map(function(k){ return groups[k]; });
     console.log(result);
-    this.buildCharts(gaugeSeries, result);
+    
+
+    var lineSeries = habit.Trackings.filter(t=>parseDate(t.Date).getFullYear() == currYear).map(t=>{
+      var date = parseDate(t.Date)
+      return [Date.UTC(date.getFullYear(),date.getMonth(), date.getDate()) , t.Frequency]
+    })
+
+
+
+    this.buildCharts(gaugeSeries, result,lineSeries);
   }
 
-  buildCharts(gaugeSeries, bubbleSeries){
-    
+  buildCharts(gaugeSeries, bubbleSeries, lineSeries){
+    console.log(lineSeries)
+    console.log(bubbleSeries)
     var parent = this;
     const charts = new Promise<void>((resolve,reject) =>{
-        this.gaugeChart = Highcharts.chart('gaugeChartContainer', { 
+        this.gaugeChart = Highcharts.chart('gaugeChartContainer', <any>{ 
 
             chart: {
                 
@@ -406,7 +407,7 @@ export class DetailsPage implements OnInit {
                 //     fontSize: '12px'
                 // },
                 valueSuffix: '%',
-                pointFormat: '<span style="font-size:1.25em; color: {point.color}; font-weight: bold">{point.y}</span>',
+                pointFormat: '<span style="font-size:2em; color: {point.color}; font-weight: bold">{point.y}</span>',
                 positioner: function (labelWidth) {
                     return {
                         x: (this.chart.chartWidth - labelWidth) / 2,
@@ -453,7 +454,7 @@ export class DetailsPage implements OnInit {
             series: gaugeSeries
         });
 
-        this.columnChart = Highcharts.chart('columnChartContainer', {
+        this.columnChart = Highcharts.chart('columnChartContainer', <any>{
           chart: {
               type: 'column',
               backgroundColor: 'transparent',
@@ -502,11 +503,12 @@ export class DetailsPage implements OnInit {
               enabled: false
           },
           tooltip: {
-              pointFormat: 'Population in 2017: <b>{point.y:.1f} millions</b>'
+              pointFormat: 'Frequency: <b>{point.y}</b>'
           },
           series: [{
               type:'column',
-              name: 'Population',
+              name: 'Frequency',
+              // borderRadius:5,
               color: {
                 radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 },
                 stops: [
@@ -529,6 +531,100 @@ export class DetailsPage implements OnInit {
               }
           }]
         });
+
+        this.lineChart = Highcharts.chart('lineChartContainer',<any>{
+          chart : {
+            renderTo : 'container',
+            type : 'spline',
+            backgroundColor: 'transparent',
+            events: {
+              //render: renderIcons
+              load: function () {
+                var self = this;
+                // self.reflow ();
+                // self.tooltip.refresh(self.series[0].data[0]);
+                setTimeout (function () {
+                  self.reflow ();
+                }, 10)
+              }
+            }
+          },
+          legend:{
+            enabled:false
+          },
+          title : {
+            text : null
+          },
+          subtitle : {
+            text : null
+          },
+          xAxis : {
+            type : 'datetime',
+            // dateTimeLabelFormats : { // don't display the dummy year
+            //   month : '%e. %b',
+            //   year : '%b'
+            // }
+          },
+          yAxis : {
+            title : {
+              text : null
+            },
+            min : 0,
+            gridLineWidth:0,
+            
+          },
+          tooltip : {
+            formatter : function () {
+              return '<b>' + this.series.name + '</b><br/>' +
+              Highcharts.dateFormat('%e. %b', this.x) + ': ' + this.y + ' m';
+            }
+          },
+          // plotOptions : {
+          //   area : {
+          //     lineWidth : 1,
+          //     marker : {
+          //       enabled : false,
+          //       states : {
+          //         hover : {
+          //           enabled : true,
+          //           radius : 5
+          //         }
+          //       }
+          //     },
+          //     shadow : false,
+          //     states : {
+          //       hover : {
+          //         lineWidth : 1
+          //       }
+          //     }
+          //   }
+          // },
+          
+          series : [{
+              name : 'Daily Frequency',
+              // type : "area",
+              // fillColor : {
+              //   linearGradient : [0, 0, 0, 300],
+              //   stops : [
+              //     [0, Highcharts.getOptions().colors[2]],
+              //     [1, 'rgba(2,0,0,0)']
+              //   ]
+              // },
+              color: {
+                linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+                stops: [
+                    [0, '#027e50'],
+                    [1, '#8dc7b1']
+                ]
+                },
+              // Define the data points. All series have a dummy year
+              // of 1970/71 in order to be compared on the same x axis. Note
+              // that in JavaScript, months start at 0 for January, 1 for February etc.
+              data : lineSeries
+            }
+          ]
+        });
+      
 
         // this.bubbleChart = Highcharts.chart("bubbleChartContainer",{
 
@@ -801,8 +897,8 @@ export class DetailsPage implements OnInit {
       console.log(s)
       return {
         "Streak":s.Streak,
-        "EndDate": moment(parseDate(s.Date)).format("MMM Do"),
-        "StartDate":moment(parseDate(s.Date)).subtract(s.Streak,"days").format("MMM Do")
+        "EndDate": moment(parseDate(s.Date)).format("MMM Do YYYY"),
+        "StartDate":moment(parseDate(s.Date)).subtract(s.Streak,"days").format("MMM Do YYYY")
       }
     });
 
