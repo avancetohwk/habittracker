@@ -7,7 +7,7 @@ import HighchartsSolidGauge from 'highcharts/modules/solid-gauge';
 import { CalendarComponent } from 'ionic2-calendar';
 import { deepCopy, getStreak, getTrackingIdxByDate, isDateBeforeToday, isToday, parseDate, ToastService } from '../common/util';
 import { JsonProvider } from 'src/providers/json/json';
-import { PopoverController } from '@ionic/angular';
+import { LoadingController, PopoverController } from '@ionic/angular';
 import * as moment from 'moment';
 import { HabitTrackingProvider } from 'src/providers/habitTracker/habitTracker';
 import { HabitProvider } from 'src/providers/habits/habits';
@@ -33,7 +33,7 @@ export class DetailsPage implements OnInit {
   streaks;
   parseDate;
   selectedYear = "2021";
-
+  loading
   slideOpts_Flip = {
     //loop:true,
     on: {
@@ -214,14 +214,20 @@ export class DetailsPage implements OnInit {
     }
   }
 
-  constructor(private route: ActivatedRoute, private router: Router, private popoverController:PopoverController, private toastService: ToastService,
+  constructor(private route: ActivatedRoute, private router: Router, private loadingCtrl:LoadingController, private toastService: ToastService,
     private habitTrackingProvider: HabitTrackingProvider, private habitProvider: HabitProvider,private jsonProvider: JsonProvider) {
+      
+
     this.parseDate = parseDate;
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         console.log('router')
         this.habit= this.router.getCurrentNavigation().extras.state.habit;
+        this.presentLoadingWithOptions().then(t=>{
+          
         this.init();
+        })
+        
       }else{
         this.router.navigateByUrl('/tabs');
         // console.log('hardcode')
@@ -240,7 +246,18 @@ export class DetailsPage implements OnInit {
   }
 
 
-  
+  async presentLoadingWithOptions() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Loading...',
+      translucent: true,
+      cssClass: 'loading',
+      spinner:'crescent'
+    });
+    await this.loading.present();
+
+    // const { role, data } = await loading.onDidDismiss();
+    // console.log('Loading dismissed with role:', role);
+  }
 
   ngOnInit() {  
     Highcharts.setOptions({
@@ -701,13 +718,17 @@ export class DetailsPage implements OnInit {
 
         resolve();
         
-        charts.then(value =>{
-          var self = this;
-          setTimeout (function () {
-              self.isLoading = false;
-          }, 1000)
-      });
+        
     })
+
+    charts.then(value =>{
+      var self = this;
+      console.log('bruh')
+      setTimeout (function () {
+          self.isLoading = false;
+          self.loading.dismiss();
+      }, 0)
+  });
   }
 
 

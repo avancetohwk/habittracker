@@ -32,7 +32,7 @@ import { enterAnimation, pageTransition } from './animations/nav-animation';
   entryComponents: [],
   imports: [BrowserModule, 
     IonicModule.forRoot({
-      navAnimation:enterAnimation
+      //navAnimation:pageTransition
     }), 
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
