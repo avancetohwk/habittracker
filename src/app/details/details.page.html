@@ -21,15 +21,16 @@
       </div>
       <ion-slides [options]="slideOpts_Flip">
         <ion-slide >
-          <div id="lineChartContainer"></div>
-        </ion-slide>
-        <ion-slide >
             
           <div id="columnChartContainer"></div>
         </ion-slide>
         <ion-slide >
           <div id="gaugeChartContainer"></div>
         </ion-slide>
+        <ion-slide >
+          <div id="lineChartContainer"></div>
+        </ion-slide>
+        
       </ion-slides>
       
 
@@ -49,7 +50,7 @@
               <ion-card lines="none" class="stats-item glassmorphism-black" >
                 <ion-label >
                   <!-- <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon> -->
-                  <h2>0</h2>
+                  <h2>{{habit?.CurrStreak}}</h2>
                   <p>Current Streak</p>
                 </ion-label>
                 <ion-icon name="flame-outline"></ion-icon>

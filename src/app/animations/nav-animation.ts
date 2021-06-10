@@ -7,8 +7,10 @@ export const enterAnimation = (baseEl: HTMLElement, opts?:any):Animation =>{
     if(opts.direction == 'forward'){
         return animationCtrl.create()
         .addElement(opts.enteringEl)
+        .beforeRemoveClass('ion-page-invisible')
         .duration(DURATION)
-        .easing("ease-in")
+        //.easing("ease-in")
+        .easing('cubic-bezier(0.3,0,0.66,1)')
         .fromTo('opacity',0, 1);
     }else{
         const rootAnimation = animationCtrl.create()

@@ -59,7 +59,7 @@
             <ion-col size="10">
               <ion-progress-bar value={{habit.Completed}} buffer={{habit.Completed}}></ion-progress-bar>
             </ion-col>
-            <ion-col size="2"><ion-button fill="clear"  class="reset-btn " size="small">
+            <ion-col size="2"><ion-button fill="clear"  class="reset-btn " size="small" (click)="addTracking(habit)">
               <ion-icon  name="refresh" *ngIf="!isAddingTracking" (click)="addTracking(habit)"></ion-icon>
                 <ion-ripple-effect></ion-ripple-effect>
                 <ion-spinner *ngIf="isAddingTracking" name="crescent"></ion-spinner>

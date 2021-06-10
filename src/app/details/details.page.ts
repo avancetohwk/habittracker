@@ -223,13 +223,13 @@ export class DetailsPage implements OnInit {
         this.habit= this.router.getCurrentNavigation().extras.state.habit;
         this.init();
       }else{
-        //this.router.navigateByUrl('/tabs');
-        console.log('hardcode')
-        //get from JSON during dev
-        this.jsonProvider.GetHabitWithTrackingsByHabitId("1").then(res=>{
-          this.habit = res;
-          this.init();
-        })
+        this.router.navigateByUrl('/tabs');
+        // console.log('hardcode')
+        // //get from JSON during dev
+        // this.jsonProvider.GetHabitWithTrackingsByHabitId("1").then(res=>{
+        //   this.habit = res;
+        //   this.init();
+        // })
         //this.jsonProvider.GetHabitWithTrackingsByHabitId("1")
       }
       
@@ -266,16 +266,16 @@ export class DetailsPage implements OnInit {
   });
   }
 
-  init(){
+  init(isUpdate = false){
     // console.log("My bubble width is:", (document.getElementById('bubbleChartContainer') as HTMLFormElement).clientWidth);
     // console.log("My width is:", (document.getElementById('gaugeChartContainer') as HTMLFormElement).clientWidth);
-    this.getStreak();
-    this.getGaugeChartData();
-    this.getCalendarData();
+    
     this.habit.FinalTracking = this.habit.Trackings[(<any>this.habit.Trackings).length -1];
     this.habit.CurrStreak = getStreak(parseDate(this.habit.FinalTracking.Date), new Date() );
     this.habit.TotalFrequency = this.habit.Trackings.reduce((sum,t)=>{return sum+t.Frequency},0)
-
+    this.getStreak();
+    this.getChartData(isUpdate);
+    this.getCalendarData();
   }
 
   ionViewDidEnter(){
@@ -309,27 +309,26 @@ export class DetailsPage implements OnInit {
         console.table(data)
         if (data){
           this.habit.Trackings = data;
-          this.init();
+          this.init(true);
         }
         this.isLoading = false;
+        this.isEdit = false;
       },
       (error) => {
         this.isLoading = false;
+        this.isEdit = false;
         console.error(error.Message)
         
       })
   }
   
-  getGaugeChartData(){
+  getChartData(isUpdate = false){
     var habit = this.habit;
-    var gaugeSeries = [];
+    var gaugeSeriesData = [];
     console.log(habit)
     //Gauge Series
     var progress = Math.min(100,Math.ceil(habit.CurrStreak/habit.TargetDays * 100));
-    var data = {
-        'type': 'solidgauge',
-        'name': habit.Name,
-        'data': [{
+    gaugeSeriesData = [{
             'color': Highcharts.getOptions().colors[0],
             // 'className':'blue-band',
             //'radius': radius+'%',
@@ -340,10 +339,8 @@ export class DetailsPage implements OnInit {
             'streak': habit.CurrStreak,
             'finalTracking':habit.FinalTracking
         }]
-    }
-    gaugeSeries.push(data);
 
-    //bubbleSeries
+    //columnSeries
     var currYear = new Date().getFullYear();
     var groups = habit.Trackings.filter(t=>parseDate(t.Date).getFullYear() == currYear).reduce((prev, cur)=> {
       var date = parseDate(cur.Date);
@@ -353,23 +350,33 @@ export class DetailsPage implements OnInit {
       //(prev[key]?prev[key].data.push(cur):prev[key]= {group: String(key), data: [cur],year: year});
       return prev;
     }, {});
-    var result = Object.keys(groups).map(function(k){ return groups[k]; });
-    console.log(result);
+    var columnSeriesData = Object.keys(groups).map(function(k){ return groups[k]; });
     
 
-    var lineSeries = habit.Trackings.filter(t=>parseDate(t.Date).getFullYear() == currYear).map(t=>{
+    var lineSeriesData = habit.Trackings.filter(t=>parseDate(t.Date).getFullYear() == currYear).map(t=>{
       var date = parseDate(t.Date)
       return [Date.UTC(date.getFullYear(),date.getMonth(), date.getDate()) , t.Frequency]
     })
 
 
-
-    this.buildCharts(gaugeSeries, result,lineSeries);
+    // if(isUpdate){
+    //   this.updateChart(this.gaugeChart, gaugeSeriesData);
+    //   this.updateChart(this.columnChart, columnSeriesData);
+    //   this.updateChart(this.lineChart, lineSeriesData);
+    // }else{
+    //   this.buildCharts(gaugeSeriesData, columnSeriesData,lineSeriesData);
+    // }
+    this.buildCharts(gaugeSeriesData, columnSeriesData,lineSeriesData);
+    
   }
 
-  buildCharts(gaugeSeries, bubbleSeries, lineSeries){
-    console.log(lineSeries)
-    console.log(bubbleSeries)
+  updateChart(chart, seriesData){
+    chart.series[0].setData(seriesData,true);
+    chart.redraw();
+    chart.reflow();
+  }
+
+  buildCharts(gaugeSeriesData, columnSeriesData, lineSeriesData){
     var parent = this;
     const charts = new Promise<void>((resolve,reject) =>{
         this.gaugeChart = Highcharts.chart('gaugeChartContainer', <any>{ 
@@ -451,7 +458,13 @@ export class DetailsPage implements OnInit {
                     rounded: true
                 }
             },
-            series: gaugeSeries
+            series:[{
+              type: 'solidgauge',
+              name: this.habit.Name,
+              data: gaugeSeriesData
+              
+              
+            }]
         });
 
         this.columnChart = Highcharts.chart('columnChartContainer', <any>{
@@ -516,7 +529,7 @@ export class DetailsPage implements OnInit {
                   [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0.3).get('rgba').toString()]
                 ]
               },
-              data: bubbleSeries,
+              data: columnSeriesData,
               dataLabels: {
                   enabled: true,
                   rotation: -90,
@@ -620,7 +633,7 @@ export class DetailsPage implements OnInit {
               // Define the data points. All series have a dummy year
               // of 1970/71 in order to be compared on the same x axis. Note
               // that in JavaScript, months start at 0 for January, 1 for February etc.
-              data : lineSeries
+              data : lineSeriesData
             }
           ]
         });
@@ -824,13 +837,14 @@ export class DetailsPage implements OnInit {
           }
           ,(error) => {
               // this.loadError = true;
+              this.isEdit = false;
               this.isLoading = false;
               console.error(error.message)
               this.toastService.presentToast(error.message);
               
           });
           this.isLoading = false;
-
+          
         }
       }
   }
@@ -846,6 +860,7 @@ export class DetailsPage implements OnInit {
     ,(error) => {
         // this.loadError = true;
         this.isLoading = false;
+        this.isEdit = false;
         console.error(error.message)
         this.toastService.presentToast(error.message);
         

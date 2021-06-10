@@ -6,12 +6,31 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+<ion-content [fullscreen]="true" style="background-color: white">
+  <ion-backdrop *ngIf="isLoading" style="opacity: 0.5"></ion-backdrop>
+  <ion-grid style="height: 100%"> 
+    <ion-row class="ion-justify-content-center card-container" style="height: 100%">
+      <!-- {{isLoading}}
+      <div style="width:100%;">  
+          <ion-progress-bar style="width:100%" type="indeterminate"></ion-progress-bar>
+          
+      </div>
+      <div [hidden]="!isLoading" style="width:100%;">
+          <ion-progress-bar style="width:100%" type="indeterminate" reversed="true"></ion-progress-bar>
+      </div> -->
+          <!-- <div [hidden]="isLoading" id="container"></div>
+          <div [hidden]="isLoading" id="container2"></div> -->
+      
+          <div id="container"></div>
+          <ion-button expand="block" (click)="addTracking()">Failed lmao</ion-button>
+          <div id="container2"></div>
+        <!-- <ion-card>
+          <ion-card-content >
+            <div id="container"></div>
+            <div id="container2"></div>
+          </ion-card-content>
+        </ion-card> -->
+    </ion-row>
+  </ion-grid>
+  <!-- <app-explore-container name="Tab 1 page"></app-explore-container> -->
 </ion-content>
