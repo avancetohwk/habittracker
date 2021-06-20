@@ -47,7 +47,7 @@
                 </div>
                 <div >
                   <ion-label col-8>
-                    <h2 >{{habit==null?"-": parseDate(habit?.FinalTracking?.Date)|date:"MMM dd yyyy"}}</h2>
+                    <h2 >{{habit==null || habit?.FinalTracking == null?"-": parseDate(habit?.FinalTracking?.Date)|date:"MMM dd yyyy"}}</h2>
                     <p >Previous failure</p>
                   </ion-label> 
                 </div>

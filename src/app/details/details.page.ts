@@ -288,7 +288,7 @@ export class DetailsPage implements OnInit {
     // console.log("My width is:", (document.getElementById('gaugeChartContainer') as HTMLFormElement).clientWidth);
     
     this.habit.FinalTracking = this.habit.Trackings[(<any>this.habit.Trackings).length -1];
-    this.habit.CurrStreak = getStreak(parseDate(this.habit.FinalTracking.Date), new Date() );
+    this.habit.CurrStreak = this.habit.FinalTracking?getStreak(parseDate(this.habit.FinalTracking.Date), new Date() ):0;
     this.habit.TotalFrequency = this.habit.Trackings.reduce((sum,t)=>{return sum+t.Frequency},0)
     this.getStreak();
     this.getChartData(isUpdate);

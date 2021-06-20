@@ -66,7 +66,7 @@ export class Tab1Page {
                         var currTrackings = trackings[idx];
                         this.habits[idx].Trackings = currTrackings;
                         this.habits[idx].FinalTracking = currTrackings[(<any>currTrackings).length -1];
-                        this.habits[idx].CurrStreak = getStreak(parseDate(this.habits[idx].FinalTracking.Date), new Date() );
+                        this.habits[idx].CurrStreak = this.habits[idx].FinalTracking? getStreak(parseDate(this.habits[idx].FinalTracking.Date), new Date() ):0;
                         this.habits[idx].Completed = this.habits[idx].CurrStreak/this.habits[idx].TargetDays;
                         this.habits[idx].TotalFrequency = (<any>currTrackings).reduce((sum,t)=>{return sum+t.Frequency},0)
                     }

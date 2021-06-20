@@ -58,7 +58,7 @@
               <ion-card lines="none" class="stats-item glassmorphism-black" >
                 <ion-label >
                   <!-- <ion-icon style="font-size: 1.5em;" name="flame-outline"></ion-icon> -->
-                  <h2>{{habit==null?"-": parseDate(habit?.FinalTracking?.Date)|date:"MMM dd yyyy"}}</h2>
+                  <h2>{{habit==null || habit?.FinalTracking == null?"-": parseDate(habit?.FinalTracking?.Date)|date:"MMM dd yyyy"}}</h2>
                   <p>Previous Failure</p>
                 </ion-label>
                 <ion-icon name="sad-outline"></ion-icon>
@@ -172,7 +172,7 @@
   
   
       <!-- List Headers in Lists -->
-      <ion-list class="streaks-container">
+      <ion-list class="streaks-container" *ngIf="streaks != null && streaks.length > 0">
         <ion-list-header lines="none">
             <ion-label><h1 class="ion-text-center">Longest Streaks</h1></ion-label>
         </ion-list-header>
